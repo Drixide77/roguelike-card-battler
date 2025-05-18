@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
+using MindlessRaptorGames;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using RoundBallGame.Systems.Services;
 
-namespace RoundBallGame.Systems
+namespace MindlessRaptorGames
 {
     public class GameSettingsController : MonoBehaviour
     {

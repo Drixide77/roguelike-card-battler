@@ -1,7 +1,7 @@
-using RoundBallGame.Systems.Data;
+using MindlessRaptorGames;
 using UnityEngine;
 
-namespace RoundBallGame.Systems.Services
+namespace MindlessRaptorGames
 {
     public class AppControlService : MonoBehaviour
     {

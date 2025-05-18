@@ -1,26 +1,30 @@
 using UnityEngine;
 
-// Applies DontDestroyOnLoad to the gameobject
-public class DontDestroyOnLoad : MonoBehaviour
+namespace MindlessRaptorGames
 {
-    [SerializeField] private bool uniqueInstance = true;
-
-    // Singleton
-    public static DontDestroyOnLoad Instance { get; private set; }
-    
-    private void Awake()
+// Applies DontDestroyOnLoad to the gameobject
+    public class DontDestroyOnLoad : MonoBehaviour
     {
-        if (uniqueInstance)
+        [SerializeField] private bool uniqueInstance = true;
+
+        // Singleton
+        public static DontDestroyOnLoad Instance { get; private set; }
+
+        private void Awake()
         {
-            if (Instance == null)
+            if (uniqueInstance)
             {
-                Instance = this;
+                if (Instance == null)
+                {
+                    Instance = this;
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
-            else
-            {
-                Destroy(gameObject);
-            }
+
+            DontDestroyOnLoad(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
     }
 }

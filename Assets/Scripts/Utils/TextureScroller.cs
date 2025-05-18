@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RoundBallGame.Systems.Utils
+namespace MindlessRaptorGames
 {
     public class TextureScroller : MonoBehaviour
     {

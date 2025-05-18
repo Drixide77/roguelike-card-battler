@@ -1,8 +1,6 @@
-﻿using RoundBallGame.Systems.Data;
-using RoundBallGame.Systems.Services;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace RoundBallGame.Systems.Utils
+namespace MindlessRaptorGames
 {
     public class SimplePlayAudio : MonoBehaviour
     {

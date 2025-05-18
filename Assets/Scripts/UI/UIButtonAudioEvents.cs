@@ -1,10 +1,9 @@
-using RoundBallGame.Systems.Data;
-using RoundBallGame.Systems.Services;
+using MindlessRaptorGames;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace RoundBallGame.Systems.UI
+namespace MindlessRaptorGames.UI
 {
     public class UIButtonAudioEvents : MonoBehaviour, IPointerClickHandler
     {

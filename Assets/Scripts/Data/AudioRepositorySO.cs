@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RoundBallGame.Systems.Data
+namespace MindlessRaptorGames
 {
     [Serializable]
     [CreateAssetMenu(fileName = "AudioRepository", menuName = "RoundBallGame/Audio/Audio Repository SO", order = 1)]

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RoundBallGame.Systems.Data
+namespace MindlessRaptorGames
 {
     public static class KeybindingsDefinition
     {

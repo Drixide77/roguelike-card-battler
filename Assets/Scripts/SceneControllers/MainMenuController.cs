@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using RoundBallGame.Systems.Services;
 
-namespace RoundBallGame.Systems
+namespace MindlessRaptorGames
 {
     public class MainMenuController : MonoBehaviour
     {
         [Header("UI Elements")]
         [SerializeField] private CanvasGroup mainPanelCanvasGroup;
         [SerializeField] private CanvasGroup buttonContainerCanvasGroup;
+        [SerializeField] private Button continueButton;
         [SerializeField] private Button playButton;
         [SerializeField] private Button exitButton;
         [Space(10)]
@@ -20,7 +21,7 @@ namespace RoundBallGame.Systems
         [SerializeField] private float holdTime;
         [Space(10)]
         [Header("Assets")]
-        [SerializeField] private string levelSceneName;
+        [SerializeField] private string gameplaySceneName;
 
         private Coroutine animationCoroutine;
         
@@ -30,6 +31,7 @@ namespace RoundBallGame.Systems
 
             SetCanvasGroupEnabled(mainPanelCanvasGroup, true);
             SetCanvasGroupEnabled(buttonContainerCanvasGroup, true);
+            continueButton.onClick.AddListener(OnContinueButtonClicked);
             playButton.onClick.AddListener(OnPlayButtonClicked);
             exitButton.onClick.AddListener(OnExitButtonClicked);
         }
@@ -49,24 +51,45 @@ namespace RoundBallGame.Systems
             {
                 GameSettingsController.Instance.ShowSettings();
             }
+
+            UpdateButtonState();
         }
         
         private void OnDestroy()
         {
+            continueButton.onClick.RemoveAllListeners();
             playButton.onClick.RemoveAllListeners();
             exitButton.onClick.RemoveAllListeners();
             if (animationCoroutine != null) StopCoroutine(animationCoroutine);
         }
         
+        private void OnContinueButtonClicked()
+        {
+            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
+        }
+        
         private void OnPlayButtonClicked()
         {
-            SetCanvasGroupEnabled(mainPanelCanvasGroup, false);
-            // TODO -
+            DataService.Instance.SetGameInProgress(true);
+            DataService.Instance.SaveProgressData();
+            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
         }
         
         private void OnExitButtonClicked()
         {
             AppControlService.Instance.ExitApplication();
+        }
+
+        private void UpdateButtonState()
+        {
+            if (DataService.Instance.HasGameInProgress())
+            {
+                continueButton.interactable = true;
+            }
+            else
+            {
+                continueButton.interactable = false;
+            }
         }
         
         private void SetCanvasGroupEnabled(CanvasGroup canvasGroup, bool enabled)

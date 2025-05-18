@@ -1,9 +1,8 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using RoundBallGame.Systems.Data;
 using UnityEngine;
 
-namespace RoundBallGame.Systems.Services
+namespace MindlessRaptorGames
 {
     public class DataService : MonoBehaviour
     {
@@ -14,7 +13,7 @@ namespace RoundBallGame.Systems.Services
         //[Header("Level Data")]
         //[SerializeField] private LevelCollectionSO levelCollection;
         
-        private ProgressData ProgressData = new ProgressData();
+        private ProgressData progressData = null;
         private string saveFilePath;
         private FileStream fileStream;
         private const string SaveFileName = "save.maru"; // Little nod to another project
@@ -36,7 +35,7 @@ namespace RoundBallGame.Systems.Services
         {
             saveFilePath = Application.persistentDataPath + "/" + SaveFileName;
             LoadProgressData();
-            if (ProgressData.LevelsProgressData == null || ProgressData.LevelsProgressData.Length == 0)
+            if (progressData == null)
             {
                 InitializeProgressData();
                 SaveProgressData();
@@ -46,17 +45,8 @@ namespace RoundBallGame.Systems.Services
 
         private void InitializeProgressData()
         {
-            /*
-            ProgressData.LevelsProgressData = new LevelProgressData[levelCollection.Levels.Length];
-            for (int i = 0; i < levelCollection.Levels.Length; i++)
-            {
-                ProgressData.LevelsProgressData[i] = new LevelProgressData
-                {
-                    LevelIndex = i,
-                    IsCompleted = false
-                };
-            }
-            */
+            progressData ??= new ProgressData();
+            SetGameInProgress(false);
         }
         
         public void SaveProgressData()
@@ -66,13 +56,13 @@ namespace RoundBallGame.Systems.Services
             if(File.Exists(saveFilePath))
             {
                 fileStream = new FileStream(saveFilePath, FileMode.Truncate);
-                formatter.Serialize(fileStream, ProgressData);
+                formatter.Serialize(fileStream, progressData);
                 fileStream.Close();
             }
             else
             {
                 fileStream = new FileStream(saveFilePath, FileMode.CreateNew);
-                formatter.Serialize(fileStream, ProgressData);
+                formatter.Serialize(fileStream, progressData);
                 fileStream.Close();
             }
         }
@@ -83,7 +73,7 @@ namespace RoundBallGame.Systems.Services
             if(File.Exists(saveFilePath))
             {
                 fileStream = new FileStream(saveFilePath, FileMode.Open);
-                ProgressData = formatter.Deserialize(fileStream) as ProgressData;
+                progressData = formatter.Deserialize(fileStream) as ProgressData;
                 fileStream.Close();
             }
             else
@@ -99,6 +89,16 @@ namespace RoundBallGame.Systems.Services
                 File.Delete(saveFilePath);
                 Debug.Log("Progress data deleted.");
             }
+        }
+
+        public bool HasGameInProgress()
+        {
+            return progressData?.GameInProgress ?? false;
+        }
+        
+        public bool SetGameInProgress(bool value)
+        {
+            return progressData.GameInProgress = value;
         }
         
 #if UNITY_EDITOR

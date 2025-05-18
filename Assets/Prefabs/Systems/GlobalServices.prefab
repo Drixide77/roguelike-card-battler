@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ba15560f0661a48ad5d21fc16a4126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelCollection: {fileID: 11400000, guid: 020871e7f216a814b939f6e5bd4265c1, type: 2}
 --- !u!1 &3547856189005632743
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8635855d0ec8424b98645c02f00c630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueInstance: 1
 --- !u!1 &4789487277801477567
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +540,14 @@ PrefabInstance:
     - target: {fileID: 4525971358563551705, guid: 1bf7064668036a045a92a864a4260add, type: 3}
       propertyPath: m_Name
       value: GameSettingsPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623688066308226925, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623688066308226925, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 256
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

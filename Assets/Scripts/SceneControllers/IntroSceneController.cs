@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
-using RoundBallGame.Systems.Data;
-using RoundBallGame.Systems.Services;
+using MindlessRaptorGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace RoundBallGame.Systems
+namespace MindlessRaptorGames
 {
     public class IntroSceneController : MonoBehaviour
     {

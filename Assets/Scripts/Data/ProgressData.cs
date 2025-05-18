@@ -1,18 +1,10 @@
 ﻿using System;
 
-namespace RoundBallGame.Systems.Data
+namespace MindlessRaptorGames
 {
     [Serializable]
     public class ProgressData
     {
-        // TODO - Redo save file data
-        public LevelProgressData[] LevelsProgressData;
-    }
-    
-    [Serializable]
-    public class LevelProgressData
-    {
-        public int LevelIndex;
-        public bool IsCompleted;
+        public bool GameInProgress = false;
     }
 }
