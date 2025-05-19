@@ -457,6 +457,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1185125066342806213}
     m_Modifications:
+    - target: {fileID: 36882399319312187, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056641147616096503, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056641147616096503, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2056641147616096503, guid: 1bf7064668036a045a92a864a4260add, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2858371096447564038, guid: 1bf7064668036a045a92a864a4260add, type: 3}
       propertyPath: m_Pivot.x
       value: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ namespace MindlessRaptorGames
         [SerializeField] private CanvasGroup buttonContainerCanvasGroup;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button playButton;
+        [SerializeField] private Button settingsButton;
         [SerializeField] private Button exitButton;
         [Space(10)]
         [Header("Animation Settings")]
@@ -33,32 +35,43 @@ namespace MindlessRaptorGames
             SetCanvasGroupEnabled(buttonContainerCanvasGroup, true);
             continueButton.onClick.AddListener(OnContinueButtonClicked);
             playButton.onClick.AddListener(OnPlayButtonClicked);
+            settingsButton.onClick.AddListener(OnSettingsButtonClicked);
             exitButton.onClick.AddListener(OnExitButtonClicked);
         }
         
         private void Start()
         {
+            GameSettingsController.Instance.HideSettings();
+            
             // Done on Start to ensure AppControlService has been initialized
             if (AppControlService.Instance.firstTimeOnMainMenu)
             {
                 SetCanvasGroupEnabled(mainPanelCanvasGroup, false);
                 SetCanvasGroupEnabled(buttonContainerCanvasGroup, false);
-                GameSettingsController.Instance.HideSettings();
                 animationCoroutine = StartCoroutine(AnimateMenuCoroutine());
                 AppControlService.Instance.firstTimeOnMainMenu = false;
-            }
-            else
-            {
-                GameSettingsController.Instance.ShowSettings();
             }
 
             UpdateButtonState();
         }
-        
+
+        private void Update()
+        {
+            if (!GameSettingsController.Instance.SettingsPanelShowing())
+            {
+                if (Input.GetKeyDown(KeybindingsDefinition.PauseKey1) ||
+                    Input.GetKeyDown(KeybindingsDefinition.PauseKey2))
+                {
+                    GameSettingsController.Instance.ShowSettings();
+                }
+            }
+        }
+
         private void OnDestroy()
         {
             continueButton.onClick.RemoveAllListeners();
             playButton.onClick.RemoveAllListeners();
+            settingsButton.onClick.RemoveAllListeners();
             exitButton.onClick.RemoveAllListeners();
             if (animationCoroutine != null) StopCoroutine(animationCoroutine);
         }
@@ -66,17 +79,24 @@ namespace MindlessRaptorGames
         private void OnContinueButtonClicked()
         {
             SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
+            StartGameplay();
         }
         
         private void OnPlayButtonClicked()
         {
             DataService.Instance.SetGameInProgress(true);
             DataService.Instance.SaveProgressData();
-            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
+            StartGameplay();
+        }
+        
+        private void OnSettingsButtonClicked()
+        {
+            GameSettingsController.Instance.ShowSettings();
         }
         
         private void OnExitButtonClicked()
         {
+            DataService.Instance.SaveProgressData();
             AppControlService.Instance.ExitApplication();
         }
 
@@ -90,6 +110,12 @@ namespace MindlessRaptorGames
             {
                 continueButton.interactable = false;
             }
+        }
+
+        private void StartGameplay()
+        {
+            GameSettingsController.Instance.HideSettings();
+            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
         }
         
         private void SetCanvasGroupEnabled(CanvasGroup canvasGroup, bool enabled)
@@ -110,7 +136,6 @@ namespace MindlessRaptorGames
             SetCanvasGroupEnabled(mainPanelCanvasGroup, true);
             yield return new WaitForSeconds(holdTime);
             SetCanvasGroupEnabled(buttonContainerCanvasGroup, true);
-            GameSettingsController.Instance.ShowSettings();
         }
     }
 }
