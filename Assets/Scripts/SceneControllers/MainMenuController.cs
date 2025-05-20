@@ -25,6 +25,8 @@ namespace MindlessRaptorGames
         [Header("Assets")]
         [SerializeField] private string gameplaySceneName;
 
+        private const AudioRepositoryEntryId ToggleSettingsSound = AudioRepositoryEntryId.UIButtonSound;
+        
         private Coroutine animationCoroutine;
         
         private void Awake()
@@ -59,9 +61,9 @@ namespace MindlessRaptorGames
         {
             if (!GameSettingsController.Instance.SettingsPanelShowing())
             {
-                if (Input.GetKeyDown(KeybindingsDefinition.PauseKey1) ||
-                    Input.GetKeyDown(KeybindingsDefinition.PauseKey2))
+                if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings))
                 {
+                    AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
                     GameSettingsController.Instance.ShowSettings();
                 }
             }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Globalization;
+﻿using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,7 +27,7 @@ namespace MindlessRaptorGames
         [SerializeField] private string mainMenuSceneName;
         [SerializeField] private string gameplaySceneName;
         
-        
+        private const AudioRepositoryEntryId ToggleSettingsSound = AudioRepositoryEntryId.UIButtonSound;
         private const string ResolutionIndexKey = "resolution_index";
 
         private bool settingsOpen = false;
@@ -76,9 +75,9 @@ namespace MindlessRaptorGames
             
             if (settingsOpen)
             {
-                if (Input.GetKeyDown(KeybindingsDefinition.PauseKey1) ||
-                    Input.GetKeyDown(KeybindingsDefinition.PauseKey2))
+                if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings))
                 {
+                    AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
                     HideSettings();
                 }
             }

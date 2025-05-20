@@ -1,15 +1,14 @@
-using System;
 using System.Collections;
-using MindlessRaptorGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace MindlessRaptorGames
 {
     public class IntroSceneController : MonoBehaviour
     {
         [Header("Scene References")]
-        [SerializeField] private SpriteRenderer[] logosToShow;
+        [SerializeField] private Image[] logosToShow;
         [Space(10)]
         [Header("Settings")]
         [SerializeField] private float initialDelay;
@@ -44,7 +43,7 @@ namespace MindlessRaptorGames
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings) || Input.GetKeyDown(KeybindingsDefinition.SkipCutscene))
             {
                 LoadScene();
             }

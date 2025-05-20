@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MindlessRaptorGames
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "AudioRepository", menuName = "RoundBallGame/Audio/Audio Repository SO", order = 1)]
+    [CreateAssetMenu(fileName = "AudioRepository", menuName = "Audio Repository SO", order = 1)]
     public class AudioRepositorySO : ScriptableObject
     {
         public AudioRepositoryEntry[] BGMList;

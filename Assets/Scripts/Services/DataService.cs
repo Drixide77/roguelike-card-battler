@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -9,9 +10,8 @@ namespace MindlessRaptorGames
         // Singleton pattern
         public static DataService Instance { get; private set; }
         
-        // TODO - Card data goes here
-        //[Header("Level Data")]
-        //[SerializeField] private LevelCollectionSO levelCollection;
+        [Header("Card Data")]
+        [SerializeField] private CardCollectionSO cardCollection;
         
         private ProgressData progressData = null;
         private string saveFilePath;
@@ -91,6 +91,26 @@ namespace MindlessRaptorGames
             }
         }
 
+        public List<Card> GetCardCollection()
+        {
+            List<Card> cards = new List<Card>();
+            foreach (var cardSO in cardCollection.Cards)
+            {
+                cards.Add(cardSO.ToCard());
+            }
+            return cards;
+        }
+
+        public List<Card> GetStartingDeck()
+        {
+            List<Card> cards = new List<Card>();
+            foreach (var cardSO in cardCollection.StartingDeck)
+            {
+                cards.Add(cardSO.ToCard());
+            }
+            return cards;
+        }
+        
         public bool HasGameInProgress()
         {
             return progressData?.GameInProgress ?? false;

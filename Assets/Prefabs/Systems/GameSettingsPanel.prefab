@@ -1342,6 +1342,7 @@ MonoBehaviour:
   resolutionLabel: {fileID: 9200365121531387730}
   mainMenuSceneName: SCN_MainMenu
   gameplaySceneName: SCN_Gameplay
+  toggleSettingsSound: 1000
 --- !u!1 &4610371864343264440
 GameObject:
   m_ObjectHideFlags: 0
