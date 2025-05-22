@@ -7,13 +7,15 @@ namespace MindlessRaptorGames
     {
         public string Name;
         public int Health;
+        public int Damage;
 
         public Enemy ToEnemy()
         {
             return new Enemy()
             {
                 Name = Name,
-                Health = Health
+                Health = Health,
+                Damage = Damage
             };
         }
     }
