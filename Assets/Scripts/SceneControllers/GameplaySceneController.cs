@@ -18,6 +18,7 @@ namespace MindlessRaptorGames
         [SerializeField] private TMP_Text goldLabel;
         [SerializeField] private TMP_Text deckLabel;
         [SerializeField] private TMP_Text energyLabel;
+        [SerializeField] private GameObject energyCounter;
         [SerializeField] private Button deckButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button endTurnButton;
@@ -75,9 +76,10 @@ namespace MindlessRaptorGames
             deckLabel.text = "Deck(" + count + ")";
         }
 
-        public void UpdateEnergyLabel(int current, int max)
+        public void UpdateEnergyLabel(int current, int max, bool shown)
         {
             energyLabel.text = current + "/" + max;
+            energyCounter.SetActive(shown);
         }
 
         public void SetEndTurnButtonStatus(bool interactable, bool visible)

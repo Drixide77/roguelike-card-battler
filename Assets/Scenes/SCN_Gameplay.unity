@@ -564,6 +564,7 @@ MonoBehaviour:
   goldLabel: {fileID: 584741881}
   deckLabel: {fileID: 766855874}
   energyLabel: {fileID: 102938809}
+  energyCounter: {fileID: 1407569380}
   deckButton: {fileID: 2118370078}
   settingsButton: {fileID: 1070654967}
   endTurnButton: {fileID: 404525729}

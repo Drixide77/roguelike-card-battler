@@ -11,6 +11,7 @@ namespace MindlessRaptorGames
         }
         
         public TurnPhase CurrentTurnPhase { get; private set; }
+        public int CurrentEnergy { get; private set; }
 
         private Coroutine turnLogicCoroutine;
         private bool combatInProgress = false;
@@ -33,12 +34,51 @@ namespace MindlessRaptorGames
         public void BeginCombat()
         {
             flowController.GameplaySceneController.SetEndTurnButtonStatus(false, true);
+            CurrentEnergy = flowController.PlayerController.GetMaxEnergy();
+            flowController.GameplaySceneController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy(), true);
             flowController.PlayerController.OnCombatStart();
             combatInProgress = true;
             
             turnLogicCoroutine = StartCoroutine(TurnLogicCoroutine());
         }
 
+        public void SpendEnergy(int value)
+        {
+            if (CurrentEnergy - value < 0)
+            {
+                Debug.LogError("TurnController -> SpendEnergy: attempted to spend " + value + " energy while having only " + CurrentEnergy + " left.");
+                CurrentEnergy = 0;
+            }
+            else CurrentEnergy -= value;
+            RefreshEnergyDisplay();
+        }
+
+        private void RefreshEnergyDisplay(bool shown = true)
+        {
+            flowController.GameplaySceneController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy(), shown);
+        }
+        
+        public void OnEnemyActionsFinished()
+        {
+            enemyActionsInProgress = false;
+        }
+        
+        public void OnEndTurnButtonPressed()
+        {
+            playerActionsInProgress = false;
+            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, true);
+        }
+        
+        public void FinishCombat()
+        {
+            combatInProgress = false;
+            if (turnLogicCoroutine != null) StopCoroutine(turnLogicCoroutine);
+            turnLogicCoroutine = null;
+            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, false);
+            RefreshEnergyDisplay(false);
+            CurrentTurnPhase = TurnPhase.OutOfCombat;
+        }
+        
         private IEnumerator TurnLogicCoroutine()
         {
             while (combatInProgress)
@@ -46,6 +86,8 @@ namespace MindlessRaptorGames
                 // Start Player Turn
                 CurrentTurnPhase = TurnPhase.StartPlayerTurn;
                 Debug.Log("### Start Player Turn");
+                CurrentEnergy = flowController.PlayerController.GetMaxEnergy();
+                RefreshEnergyDisplay();
                 // TODO - Do the rest of initializations
                 // TODO - Board Controller: Draw initial hand
 
@@ -75,6 +117,7 @@ namespace MindlessRaptorGames
                 // End Player Turn
                 CurrentTurnPhase = TurnPhase.EndPlayerTurn;
                 Debug.Log("### End Player Turn");
+                SpendEnergy(2);
                 
                 // Enemy Actions
                 CurrentTurnPhase = TurnPhase.EnemyActions;
@@ -92,25 +135,6 @@ namespace MindlessRaptorGames
                 
                 yield return null;
             }
-        }
-
-        public void OnEnemyActionsFinished()
-        {
-            enemyActionsInProgress = false;
-        }
-        
-        public void OnEndTurnButtonPressed()
-        {
-            playerActionsInProgress = false;
-            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, true);
-        }
-        
-        public void FinishCombat()
-        {
-            combatInProgress = false;
-            if (turnLogicCoroutine != null) StopCoroutine(turnLogicCoroutine);
-            turnLogicCoroutine = null;
-            CurrentTurnPhase = TurnPhase.OutOfCombat;
         }
     }
 }

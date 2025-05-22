@@ -25,14 +25,19 @@ namespace MindlessRaptorGames
             currentMaxEnergy = startingMaxEnergy;
             flowController.GameplaySceneController.UpdateHealth(currentHealth, maximumHealth);
             flowController.GameplaySceneController.UpdateGold(currentGold);
-            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy);
+            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy, false);
         }
 
+        public int GetMaxEnergy()
+        {
+            return currentMaxEnergy;
+        }
+        
         public void OnCombatStart()
         {
             flowController.GameplaySceneController.UpdateHealth(currentHealth, maximumHealth);
             flowController.GameplaySceneController.UpdateGold(currentGold);
-            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy);
+            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy, true);
         }
         
         public void ModifyHealth(int value)
