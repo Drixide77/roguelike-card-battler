@@ -117,7 +117,6 @@ namespace MindlessRaptorGames
                 // End Player Turn
                 CurrentTurnPhase = TurnPhase.EndPlayerTurn;
                 Debug.Log("### End Player Turn");
-                SpendEnergy(2);
                 
                 // Enemy Actions
                 CurrentTurnPhase = TurnPhase.EnemyActions;

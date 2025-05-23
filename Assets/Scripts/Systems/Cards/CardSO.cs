@@ -15,16 +15,9 @@ namespace MindlessRaptorGames
         public CardRarity Rarity;
         public List<EffectData> Effects;
 
-        public Card ToCard()
+        public Card ToCard(GameFlowController flowController)
         {
-            Card card = new Card
-            {
-                Name = Name,
-                EnergyCost = EnergyCost,
-                Art = Art,
-                Rarity = Rarity,
-                Effects = Effects
-            };
+            Card card = new Card(Name, EnergyCost, Art, Rarity, Effects, flowController);
             return card;
         }
     }

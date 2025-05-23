@@ -14,7 +14,7 @@ namespace MindlessRaptorGames
             return new Enemy()
             {
                 Name = Name,
-                Health = Health,
+                MaxHealth = Health,
                 Damage = Damage
             };
         }

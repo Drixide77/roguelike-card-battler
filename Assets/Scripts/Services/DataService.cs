@@ -91,22 +91,22 @@ namespace MindlessRaptorGames
             }
         }
 
-        public List<Card> GetCardCollection()
+        public List<Card> GetCardCollection(GameFlowController flowController)
         {
             List<Card> cards = new List<Card>();
             foreach (var cardSO in cardCollection.Cards)
             {
-                cards.Add(cardSO.ToCard());
+                cards.Add(cardSO.ToCard(flowController));
             }
             return cards;
         }
 
-        public List<Card> GetStartingDeck()
+        public List<Card> GetStartingDeck(GameFlowController flowController)
         {
             List<Card> cards = new List<Card>();
             foreach (var cardSO in cardCollection.StartingDeck)
             {
-                cards.Add(cardSO.ToCard());
+                cards.Add(cardSO.ToCard(flowController));
             }
             return cards;
         }

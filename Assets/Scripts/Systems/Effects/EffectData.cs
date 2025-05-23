@@ -19,5 +19,10 @@ namespace MindlessRaptorGames
         public int Magnitude;
         public EffectTarget Target;
         public ScriptableObject EffectSO;
+        
+        public ICardEffect GetCardEffect()
+        {
+            return EffectSO as ICardEffect;
+        }
     }
 }

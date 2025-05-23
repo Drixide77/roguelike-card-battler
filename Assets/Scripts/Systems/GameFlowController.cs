@@ -46,6 +46,11 @@ namespace MindlessRaptorGames
         {
             TurnController.BeginCombat();
         }
+        
+        public void EndEncounter()
+        {
+            TurnController.FinishCombat();
+        }
 
         public void OnPlayerDeath()
         {

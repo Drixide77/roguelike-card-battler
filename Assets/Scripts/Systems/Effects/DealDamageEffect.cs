@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MindlessRaptorGames
 {
@@ -10,9 +11,13 @@ namespace MindlessRaptorGames
             return EffectType.DealDamage;
         }
         
-        public void PerformEffect()
+        public void PerformEffect(List<Enemy> targets, int magnitude)
         {
-            //
+            if (targets.Count == 0) Debug.LogError("DealDamageEffect -> PerformEffect: Attempted to perform effect without any targets.");
+            foreach (var target in targets)
+            {
+                target.ModifyHealth(-magnitude);
+            }
         }
     }
 }

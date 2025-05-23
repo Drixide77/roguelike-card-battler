@@ -19,8 +19,8 @@ namespace MindlessRaptorGames
             base.Initialize(gameFlowController);
             
             flowController.GameplaySceneController.DeckButtonPressed += OnDeckButtonPressed;
-            cardLibrary = DataService.Instance.GetCardCollection();
-            currentDeck = DataService.Instance.GetStartingDeck();
+            cardLibrary = DataService.Instance.GetCardCollection(flowController);
+            currentDeck = DataService.Instance.GetStartingDeck(flowController);
             flowController.GameplaySceneController.UpdateDeckLabel(currentDeck.Count);
         }
 
@@ -28,6 +28,10 @@ namespace MindlessRaptorGames
         {
             // TODO - Implement
             Debug.Log("The card library contains " + cardLibrary.Count + " cards.");
+            
+            // TODO- TEMP! Remove
+            if (currentDeck[0].CanBePlayed())
+                currentDeck[0].PlayCard(new List<Enemy>() {flowController.EncounterController.GetEnemies()[0]});
         }
     }
 }
