@@ -23,9 +23,9 @@ namespace MindlessRaptorGames
             maximumHealth = currentHealth = startingHealth;
             currentGold = startingGold;
             currentMaxEnergy = startingMaxEnergy;
-            flowController.GameplaySceneController.UpdateHealth(currentHealth, maximumHealth);
-            flowController.GameplaySceneController.UpdateGold(currentGold);
-            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy, false);
+            flowController.GameplaySceneController.UIController.UpdateHealth(currentHealth, maximumHealth);
+            flowController.GameplaySceneController.UIController.UpdateGold(currentGold);
+            flowController.GameplaySceneController.UIController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy);
         }
 
         public int GetMaxEnergy()
@@ -35,15 +35,15 @@ namespace MindlessRaptorGames
         
         public void OnCombatStart()
         {
-            flowController.GameplaySceneController.UpdateHealth(currentHealth, maximumHealth);
-            flowController.GameplaySceneController.UpdateGold(currentGold);
-            flowController.GameplaySceneController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy, true);
+            flowController.GameplaySceneController.UIController.UpdateHealth(currentHealth, maximumHealth);
+            flowController.GameplaySceneController.UIController.UpdateGold(currentGold);
+            flowController.GameplaySceneController.UIController.UpdateEnergyLabel(currentMaxEnergy, currentMaxEnergy);
         }
         
         public void ModifyHealth(int value)
         {
             currentHealth = Math.Min(maximumHealth, Math.Max(0, currentHealth + value));
-            flowController.GameplaySceneController.UpdateHealth(currentHealth, maximumHealth);
+            flowController.GameplaySceneController.UIController.UpdateHealth(currentHealth, maximumHealth);
             if (currentHealth <= 0) flowController.OnPlayerDeath();
         }
     }

@@ -54,6 +54,8 @@ namespace MindlessRaptorGames
             {
                 effect.GetCardEffect().PerformEffect(targets, effect.Magnitude);
             }
+            
+            flowController.BoardController.DiscardCard(this, false);
         }
     }
 }

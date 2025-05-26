@@ -21,22 +21,24 @@ namespace MindlessRaptorGames
 
         private void OnDestroy()
         {
-            flowController.GameplaySceneController.EndTurnButtonPressed -= OnEndTurnButtonPressed;
+            flowController.GameplaySceneController.UIController.EndTurnButtonPressed -= OnEndTurnButtonPressed;
         }
 
         public override void Initialize(GameFlowController gameFlowController)
         {
             base.Initialize(gameFlowController);
-            flowController.GameplaySceneController.EndTurnButtonPressed += OnEndTurnButtonPressed;
+            flowController.GameplaySceneController.UIController.EndTurnButtonPressed += OnEndTurnButtonPressed;
             CurrentTurnPhase = TurnPhase.OutOfCombat;
         }
         
         public void BeginCombat()
         {
-            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, true);
+            flowController.GameplaySceneController.UIController.SetBoardUIVisibility(true);
+            flowController.GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
             CurrentEnergy = flowController.PlayerController.GetMaxEnergy();
-            flowController.GameplaySceneController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy(), true);
+            flowController.GameplaySceneController.UIController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy());
             flowController.PlayerController.OnCombatStart();
+            flowController.BoardController.OnCombatStart();
             combatInProgress = true;
             
             turnLogicCoroutine = StartCoroutine(TurnLogicCoroutine());
@@ -53,9 +55,9 @@ namespace MindlessRaptorGames
             RefreshEnergyDisplay();
         }
 
-        private void RefreshEnergyDisplay(bool shown = true)
+        private void RefreshEnergyDisplay()
         {
-            flowController.GameplaySceneController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy(), shown);
+            flowController.GameplaySceneController.UIController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy());
         }
         
         public void OnEnemyActionsFinished()
@@ -66,7 +68,12 @@ namespace MindlessRaptorGames
         public void OnEndTurnButtonPressed()
         {
             playerActionsInProgress = false;
-            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, true);
+            flowController.GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
+        }
+
+        public void OnDrawingCompleted()
+        {
+            drawInProgress = false;
         }
         
         public void FinishCombat()
@@ -74,8 +81,9 @@ namespace MindlessRaptorGames
             combatInProgress = false;
             if (turnLogicCoroutine != null) StopCoroutine(turnLogicCoroutine);
             turnLogicCoroutine = null;
-            flowController.GameplaySceneController.SetEndTurnButtonStatus(false, false);
-            RefreshEnergyDisplay(false);
+            flowController.GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
+            flowController.GameplaySceneController.UIController.SetBoardUIVisibility(false);
+            flowController.BoardController.OnCombatFinish();
             CurrentTurnPhase = TurnPhase.OutOfCombat;
         }
         
@@ -85,30 +93,26 @@ namespace MindlessRaptorGames
             {
                 // Start Player Turn
                 CurrentTurnPhase = TurnPhase.StartPlayerTurn;
-                Debug.Log("### Start Player Turn");
+                Debug.Log("# Start Player Turn");
                 CurrentEnergy = flowController.PlayerController.GetMaxEnergy();
                 RefreshEnergyDisplay();
                 // TODO - Do the rest of initializations
-                // TODO - Board Controller: Draw initial hand
 
                 // Draw Phase
                 CurrentTurnPhase = TurnPhase.Draw;
                 drawInProgress = true;
-                // TODO - Board Controller - Draw card
-                Debug.Log("### Draw Phase");
+                flowController.BoardController.DrawNewHand();
+                Debug.Log("# Draw Phase");
                 while (drawInProgress)
                 {
-                    yield return new WaitForSeconds(1f);
-                    drawInProgress = false;
                     yield return null;
                 }
                 
                 // Player Actions
                 CurrentTurnPhase = TurnPhase.PlayerActions;
-                flowController.GameplaySceneController.SetEndTurnButtonStatus(true, true);
+                flowController.GameplaySceneController.UIController.SetEndTurnButtonStatus(true);
                 playerActionsInProgress = true;
-                // TODO - Multiple controllers handling player actions
-                Debug.Log("### Player Actions");
+                Debug.Log("# Player Actions");
                 while (playerActionsInProgress)
                 {
                     yield return null;
@@ -116,12 +120,13 @@ namespace MindlessRaptorGames
                 
                 // End Player Turn
                 CurrentTurnPhase = TurnPhase.EndPlayerTurn;
-                Debug.Log("### End Player Turn");
+                Debug.Log("# End Player Turn");
+                flowController.BoardController.DiscardHand();
                 
                 // Enemy Actions
                 CurrentTurnPhase = TurnPhase.EnemyActions;
                 enemyActionsInProgress = true;
-                Debug.Log("### Enemy Actions");
+                Debug.Log("# Enemy Actions");
                 flowController.EncounterController.PerformEnemyActions();
                 while (enemyActionsInProgress)
                 {
@@ -130,7 +135,7 @@ namespace MindlessRaptorGames
                 
                 // End Turn
                 CurrentTurnPhase = TurnPhase.EndTurn;
-                Debug.Log("### End Turn");
+                Debug.Log("# End Turn");
                 
                 yield return null;
             }

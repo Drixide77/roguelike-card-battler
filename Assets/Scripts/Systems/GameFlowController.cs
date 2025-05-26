@@ -15,7 +15,7 @@ namespace MindlessRaptorGames
         public PlayerController PlayerController;
         public EncounterController EncounterController;
         public DeckController DeckController;
-        // TODO - Board controller (draw pile, hand, discard pile)
+        public BoardController BoardController;
         public TurnController TurnController;
 
         public GameplayState GameState { get; private set; }
@@ -31,14 +31,15 @@ namespace MindlessRaptorGames
             PlayerController.Initialize(this);
             EncounterController.Initialize(this);
             DeckController.Initialize(this);
-            // TODO - Board controller
+            BoardController.Initialize(this);
             TurnController.Initialize(this);
         }
 
         public void StartRun()
         {
             GameState = GameplayState.RunStart;
-            GameplaySceneController.SetEndTurnButtonStatus(false, false);
+            GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
+            GameplaySceneController.UIController.SetBoardUIVisibility(false);
             StartEncounter();
         }
 
@@ -56,6 +57,7 @@ namespace MindlessRaptorGames
         {
             Debug.Log("Game Over!");
             TurnController.FinishCombat();
+            DataService.Instance.SetGameInProgress(false);
             GameplaySceneController.OnRunEnded();
         }
     }
