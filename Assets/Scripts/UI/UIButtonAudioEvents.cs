@@ -1,9 +1,8 @@
-using MindlessRaptorGames;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace MindlessRaptorGames.UI
+namespace MindlessRaptorGames
 {
     public class UIButtonAudioEvents : MonoBehaviour, IPointerClickHandler
     {

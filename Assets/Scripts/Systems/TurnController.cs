@@ -39,6 +39,7 @@ namespace MindlessRaptorGames
             flowController.GameplaySceneController.UIController.UpdateEnergyLabel(CurrentEnergy, flowController.PlayerController.GetMaxEnergy());
             flowController.PlayerController.OnCombatStart();
             flowController.BoardController.OnCombatStart();
+            flowController.EncounterController.OnCombatStart();
             combatInProgress = true;
             
             turnLogicCoroutine = StartCoroutine(TurnLogicCoroutine());
@@ -83,7 +84,8 @@ namespace MindlessRaptorGames
             turnLogicCoroutine = null;
             flowController.GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
             flowController.GameplaySceneController.UIController.SetBoardUIVisibility(false);
-            flowController.BoardController.OnCombatFinish();
+            flowController.BoardController.OnCombatEnd();
+            flowController.EncounterController.OnCombatEnd();
             CurrentTurnPhase = TurnPhase.OutOfCombat;
         }
         

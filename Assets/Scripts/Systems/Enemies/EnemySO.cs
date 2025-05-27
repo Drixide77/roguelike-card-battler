@@ -6,6 +6,7 @@ namespace MindlessRaptorGames
     public class EnemySO : ScriptableObject
     {
         public string Name;
+        public Sprite Sprite;
         public int Health;
         public int Damage;
 
@@ -14,6 +15,7 @@ namespace MindlessRaptorGames
             return new Enemy()
             {
                 Name = Name,
+                Sprite = Sprite,
                 MaxHealth = Health,
                 Damage = Damage
             };

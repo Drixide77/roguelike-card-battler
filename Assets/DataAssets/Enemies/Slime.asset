@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Slime
   m_EditorClassIdentifier: 
   Name: Slime
+  Sprite: {fileID: 21300000, guid: 7edebaadc7516274e81af7db6b20a0e1, type: 3}
   Health: 20
   Damage: 9

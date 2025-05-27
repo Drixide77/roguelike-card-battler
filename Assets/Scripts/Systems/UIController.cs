@@ -101,9 +101,7 @@ namespace MindlessRaptorGames
 
         public void SetBoardUIVisibility(bool shown)
         {
-            boardUICanvasGroup.alpha = shown ? 1 : 0;
-            boardUICanvasGroup.interactable = shown;
-            boardUICanvasGroup.blocksRaycasts = shown;
+            Utils.SetCanvasGroupVisible(boardUICanvasGroup, shown);
         }
         
         private void OnDeckButtonPressed()

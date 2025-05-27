@@ -43,7 +43,7 @@ namespace MindlessRaptorGames
             UpdateBoardUI();
         }
 
-        public void OnCombatFinish()
+        public void OnCombatEnd()
         {
             // ---
         }

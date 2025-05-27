@@ -137,12 +137,10 @@ namespace MindlessRaptorGames
             abandonRunButton.gameObject.SetActive(SceneManager.GetActiveScene().name == gameplaySceneName);
         }
         
-        private void SetCanvasGroupEnabled(CanvasGroup canvasGroup, bool enabled)
+        private void SetCanvasGroupEnabled(CanvasGroup canvasGroup, bool visible)
         {
-            canvasGroup.alpha = enabled ? 1 : 0;
-            canvasGroup.interactable = enabled;
-            canvasGroup.blocksRaycasts = enabled;
-            nextSettingsVisibility = enabled;
+            Utils.SetCanvasGroupVisible(canvasGroup, visible);
+            nextSettingsVisibility = visible;
             settingsVisibilityChangedThisFrame = true;
         }
         

@@ -5,7 +5,7 @@ namespace MindlessRaptorGames
 {
     public class GameplaySceneController : MonoBehaviour
     {
-        [Header("Controllers")]
+        [Header("Scene Controllers")]
         public UIController UIController;
         [SerializeField] private GameFlowController flowController;
         [Header("Assets")]
