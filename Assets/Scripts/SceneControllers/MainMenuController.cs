@@ -64,7 +64,7 @@ namespace MindlessRaptorGames
                 if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings))
                 {
                     AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
-                    GameSettingsController.Instance.ShowSettings();
+                    GameSettingsController.Instance.ShowSettings(false);
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace MindlessRaptorGames
         
         private void OnSettingsButtonClicked()
         {
-            GameSettingsController.Instance.ShowSettings();
+            GameSettingsController.Instance.ShowSettings(false);
         }
         
         private void OnExitButtonClicked()

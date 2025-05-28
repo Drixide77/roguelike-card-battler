@@ -28,8 +28,6 @@ namespace MindlessRaptorGames
 
         private void Update()
         {
-            UpdateBoardUI();
-            
             if (cardIsSelected && Input.GetMouseButtonUp(0))
             {
                 RaycastHit2D[] cubeHit = Physics2D.RaycastAll(Input.mousePosition, Vector2.zero);

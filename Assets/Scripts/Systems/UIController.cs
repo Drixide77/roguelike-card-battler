@@ -50,7 +50,7 @@ namespace MindlessRaptorGames
                 if (!GameSettingsController.Instance.SettingsPanelShowing())
                 {
                     AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
-                    GameSettingsController.Instance.ShowSettings();
+                    GameSettingsController.Instance.ShowSettings(true);
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace MindlessRaptorGames
         
         private void OnSettingsButtonPressed()
         {
-            GameSettingsController.Instance.ShowSettings();
+            GameSettingsController.Instance.ShowSettings(true);
         }
 
         private void OnEndTurnButtonPressed()

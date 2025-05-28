@@ -104,8 +104,9 @@ namespace MindlessRaptorGames
             resolutionButton.onClick.RemoveAllListeners();
         }
 
-        public void ShowSettings()
+        public void ShowSettings(bool inGameplay)
         {
+            abandonRunButton.gameObject.SetActive(inGameplay);
             SetCanvasGroupEnabled(settingsPanelCanvasGroup, true);
         }
 
