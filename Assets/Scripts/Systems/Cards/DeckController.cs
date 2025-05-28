@@ -33,11 +33,6 @@ namespace MindlessRaptorGames
         {
             // TODO - Implement
             Debug.Log("The card library contains " + cardLibrary.Count + " cards.");
-            
-            // TODO- TEMP! Remove
-            Debug.Log("### Draw pile: " + flowController.BoardController.GetDrawPile().Count + ", discard pile: " + flowController.BoardController.GetDiscardPile().Count + ", hand: " + flowController.BoardController.GetHand().Count);
-            if (flowController.BoardController.GetHand()[0].CanBePlayed())
-                flowController.BoardController.GetHand()[0].PlayCard(new List<Enemy>() {flowController.EncounterController.GetEnemies()[0]});
         }
     }
 }

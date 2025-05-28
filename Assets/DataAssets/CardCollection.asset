@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cards:
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
+  - {fileID: 11400000, guid: 7c3b683835e98ad4982f99a100defb1e, type: 2}
   StartingDeck:
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
@@ -22,6 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
   - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
-  - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
-  - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
-  - {fileID: 11400000, guid: dc1e326d10238544498ddda11a7f7f06, type: 2}
+  - {fileID: 11400000, guid: 7c3b683835e98ad4982f99a100defb1e, type: 2}
+  - {fileID: 11400000, guid: 7c3b683835e98ad4982f99a100defb1e, type: 2}
+  - {fileID: 11400000, guid: 7c3b683835e98ad4982f99a100defb1e, type: 2}

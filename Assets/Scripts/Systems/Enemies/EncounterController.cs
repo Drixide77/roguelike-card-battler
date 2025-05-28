@@ -60,6 +60,15 @@ namespace MindlessRaptorGames
             StartCoroutine(FinishEnemyActionsWithDelayCoroutine(1f));
         }
 
+        public Enemy GetEnemyById(string id)
+        {
+            foreach (var enemy in encounterEnemies)
+            {
+                if (enemy.GetEnemyId() == id) return enemy;
+            }
+            return null;
+        }
+
         private void SetEncounterEnemies(List<EnemySO> newEnemiesSO)
         {
             encounterEnemies.Clear();
@@ -71,7 +80,7 @@ namespace MindlessRaptorGames
                 }
 
                 Enemy enemy = newEnemiesSO[i].ToEnemy();
-                enemy.Initialize(flowController, visualPrefabs[i]);
+                enemy.Initialize(flowController, visualPrefabs[i], "enemy"+i);
                 encounterEnemies.Add(enemy);
             }
         }

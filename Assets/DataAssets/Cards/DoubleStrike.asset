@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08306368421e4ce78dc743c31c99614d, type: 3}
-  m_Name: Strike
+  m_Name: DoubleStrike
   m_EditorClassIdentifier: 
-  Name: Strike
-  EnergyCost: 1
-  Art: {fileID: -1730254177, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
-  Rarity: 0
+  Name: Double Strike
+  EnergyCost: 2
+  Art: {fileID: 1870898176, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
+  Rarity: 1
   Effects:
-  - Magnitude: 6
+  - Magnitude: 12
     Target: 1
     EffectSO: {fileID: 11400000, guid: df11b254fea5e5b4c8ff36cab9cfce08, type: 2}

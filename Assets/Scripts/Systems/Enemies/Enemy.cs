@@ -13,10 +13,12 @@ namespace MindlessRaptorGames
         private GameFlowController flowController;
         private EnemyVisualDescriptor visualDescriptor;
         private int currentHealth;
+        private string enemyId;
 
-        public void Initialize(GameFlowController flowController, EnemyVisualDescriptor visualDescriptor)
+        public void Initialize(GameFlowController flowController, EnemyVisualDescriptor visualDescriptor, string enemyId)
         {
             currentHealth = MaxHealth;
+            this.enemyId = enemyId;
             this.flowController = flowController;
             this.visualDescriptor = visualDescriptor;
             
@@ -26,11 +28,17 @@ namespace MindlessRaptorGames
             this.visualDescriptor.HealthFillImage.fillAmount = 1f;
             this.visualDescriptor.HealthLabel.text = currentHealth + "/" + MaxHealth;
             this.visualDescriptor.NextActionDisplay.text = "Attk " + Damage;
+            this.visualDescriptor.EnemyId = enemyId;
         }
 
         public int GetCurrentHealth()
         {
             return currentHealth;
+        }
+
+        public string GetEnemyId()
+        {
+            return enemyId;
         }
         
         public void ModifyHealth(int value)
@@ -48,7 +56,6 @@ namespace MindlessRaptorGames
         public void PerformEnemyAction(GameFlowController flowController)
         {
             // TODO - Have proper enemy action logic
-            Debug.Log(Name + "(" + currentHealth + "/" + MaxHealth + ") dealt " + Damage + " damage.");
             flowController.PlayerController.ModifyHealth(-Damage);
         }
     }

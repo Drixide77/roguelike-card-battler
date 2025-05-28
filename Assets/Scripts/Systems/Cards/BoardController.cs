@@ -5,15 +5,48 @@ namespace MindlessRaptorGames
 {
     public class BoardController : GameplayModule
     {
+        [Header("Scene References")]
+        [SerializeField] private Transform handPosition;
         [Header("Settings")]
         [SerializeField] private int initialHandSize = 5;
         [SerializeField] private int maxHandSize = 10;
+        [SerializeField] private float fanSpread = -7.5f;
+        [SerializeField] private float cardSpacing = 150f;
+        [SerializeField] private float verticalSpacing = 100f;
+        [Header("Assets")]
+        [SerializeField] private CardVisualDescriptor cardPrefab;
         
         private List<Card> drawPile; // Cards remaining to be drawn into the hand
         private List<Card> discardPile; // Cards that have been played, awaiting to be reshuffled into the draw pile
         private List<Card> exhaustPile; // Cards that have been exhausted and will not go back to the draw pile
         
         private List<Card> playerHand; // The current hand of cards
+        private List<CardVisualDescriptor> visualPrefabs; // The visual prefabs for the hand cards
+        
+        private Card selectedCard; // The currently selected card
+        private bool cardIsSelected = false; // Whether a card is selected at the momoent
+
+        private void Update()
+        {
+            UpdateBoardUI();
+            
+            if (cardIsSelected && Input.GetMouseButtonUp(0))
+            {
+                RaycastHit2D[] cubeHit = Physics2D.RaycastAll(Input.mousePosition, Vector2.zero);
+                if (cubeHit.Length > 0)
+                {
+                    foreach (RaycastHit2D hit in cubeHit)
+                    {
+                        if (hit.collider.CompareTag("Enemy"))
+                        {
+                            string enemyId = hit.collider.gameObject.GetComponent<EnemyVisualDescriptor>().EnemyId;
+                            selectedCard.PlayCard(new List<Enemy>() { flowController.EncounterController.GetEnemyById(enemyId) });
+                            cardIsSelected = false;
+                        }
+                    }
+                }
+            }
+        }
         
         private void OnDestroy()
         {
@@ -35,6 +68,7 @@ namespace MindlessRaptorGames
             exhaustPile = new List<Card>();
             drawPile = new List<Card>();
             playerHand = new List<Card>();
+            visualPrefabs = new List<CardVisualDescriptor>();
             foreach (var card in flowController.DeckController.GetCurrentDeck())
             {
                 drawPile.Add(card);
@@ -45,7 +79,7 @@ namespace MindlessRaptorGames
 
         public void OnCombatEnd()
         {
-            // ---
+            DiscardHand();
         }
 
         public List<Card> GetDrawPile()
@@ -86,7 +120,10 @@ namespace MindlessRaptorGames
                 }
                 if (playerHand.Count < maxHandSize)
                 {
+                    CardVisualDescriptor descriptor = Instantiate(cardPrefab, handPosition.position, Quaternion.identity, handPosition).GetComponent<CardVisualDescriptor>();
+                    drawPile[0].InitializeVisuals(descriptor);
                     playerHand.Add(drawPile[0]);
+                    visualPrefabs.Add(descriptor);
                     drawPile.RemoveAt(0);
                 }
                 else // Hand is full
@@ -105,6 +142,9 @@ namespace MindlessRaptorGames
             {
                 if (exhaust) exhaustPile.Add(card);
                 else discardPile.Add(card);
+                visualPrefabs.Remove(card.GetVisualDescriptor());
+                Destroy(card.GetVisualDescriptor().gameObject);
+                card.RemoveVisuals();
             }
             else
             {
@@ -115,11 +155,11 @@ namespace MindlessRaptorGames
 
         public void DiscardHand()
         {
-            foreach (var card in playerHand)
+            while (playerHand.Count > 0)
             {
-                discardPile.Add(card);
+                // TODO - Handle exhaust case
+                DiscardCard(playerHand[0], false);
             }
-            playerHand.Clear();
             UpdateBoardUI();
         }
 
@@ -132,6 +172,45 @@ namespace MindlessRaptorGames
         {
             flowController.GameplaySceneController.UIController.UpdateDrawPileLabel(drawPile.Count);
             flowController.GameplaySceneController.UIController.UpdateDiscardPileLabel(discardPile.Count);
+            UpdateHandVisuals();
+        }
+
+        public void SetSelectedCard(bool selected, Card card = null)
+        {
+            if (!selected)
+            {
+                cardIsSelected = false;
+                return;
+            }
+            selectedCard = card;
+            cardIsSelected = true;
+            
+        }
+        
+        private void UpdateHandVisuals()
+        {
+            int cardCount = visualPrefabs.Count;
+
+            if (cardCount == 1)
+            {
+                visualPrefabs[0].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                visualPrefabs[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+                return;
+            }
+
+            for (int i = 0; i < cardCount; i++)
+            {
+                float rotationAngle = (fanSpread * (i - (cardCount - 1) / 2f));
+                visualPrefabs[i].transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
+
+                float horizontalOffset = (cardSpacing * (i - (cardCount - 1) / 2f));
+
+                float normalizedPosition = (2f * i / (cardCount - 1) - 1f); //Normalize card position between -1, 1
+                float verticalOffset = verticalSpacing * (1 - normalizedPosition * normalizedPosition);
+
+                //Set card position
+                visualPrefabs[i].transform.localPosition = new Vector3(horizontalOffset, verticalOffset, 0f);
+            }
         }
         
         private void OnDrawPileButtonPressed()

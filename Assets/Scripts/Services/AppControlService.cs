@@ -38,6 +38,8 @@ namespace MindlessRaptorGames
         private void Initialize()
         {
             firstTimeOnMainMenu = true;
+            // Required for 2D Raycasts
+            Physics2D.queriesHitTriggers = true;
         }
         
         public void ToggleFullscreen()

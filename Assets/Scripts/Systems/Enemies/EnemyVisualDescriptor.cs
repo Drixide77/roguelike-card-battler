@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,5 +13,6 @@ namespace MindlessRaptorGames
         public TMP_Text NameLabel;
         public TMP_Text HealthLabel;
         public TMP_Text NextActionDisplay;
+        public string EnemyId = "";
     }
 }

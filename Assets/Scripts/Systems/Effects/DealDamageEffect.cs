@@ -19,5 +19,28 @@ namespace MindlessRaptorGames
                 target.ModifyHealth(-magnitude);
             }
         }
+
+        public string GetDescription(EffectTarget targetType, int magnitude)
+        {
+            string description = "";
+            switch (targetType)
+            {
+                case EffectTarget.Self:
+                    description = "Deal " + magnitude + " damage to yourself.";
+                    break;
+                case EffectTarget.SingleEnemy:
+                    description = "Deal " + magnitude + " damage.";
+                    break;
+                case EffectTarget.AllEnemies:
+                    description = "Deal " + magnitude + " damage to all enemies.";
+                    break;
+                case EffectTarget.AllBoard:
+                    description = "Deal " + magnitude + " damage to all enemies and yourself.";
+                    break;
+                default:
+                    break;
+            }
+            return description;
+        }
     }
 }

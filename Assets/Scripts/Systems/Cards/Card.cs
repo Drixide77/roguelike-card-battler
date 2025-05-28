@@ -19,6 +19,7 @@ namespace MindlessRaptorGames
         public List<EffectData> Effects;
 
         private GameFlowController flowController;
+        private CardVisualDescriptor visualDescriptor;
 
         public Card(string name, int energyCost, Sprite art, CardRarity rarity, List<EffectData> effects, GameFlowController flowController)
         {
@@ -28,6 +29,43 @@ namespace MindlessRaptorGames
             Rarity = rarity;
             Effects = effects;
             this.flowController = flowController;
+        }
+
+        public void InitializeVisuals(CardVisualDescriptor descriptor)
+        {
+            visualDescriptor = descriptor;
+            visualDescriptor.NameLabel.text = Name;
+            visualDescriptor.EnergyCostLabel.text = EnergyCost.ToString();
+            visualDescriptor.Image.sprite = Art;
+            switch (Rarity)
+            {
+                case CardRarity.Common:
+                    visualDescriptor.RarityIcon.color = Color.white;
+                    break;
+                case CardRarity.Uncommon:
+                    visualDescriptor.RarityIcon.color = Color.green;
+                    break;
+                case CardRarity.Rare:
+                    visualDescriptor.RarityIcon.color = Color.blue;
+                    break;
+            }
+
+            visualDescriptor.EffectsLabel.text = "";
+            foreach (EffectData effectData in Effects)
+            {
+                visualDescriptor.EffectsLabel.text += effectData.GetCardEffect().GetDescription(effectData.Target, effectData.Magnitude);
+            }
+            visualDescriptor.SetReferences(this, flowController);
+        }
+
+        public CardVisualDescriptor GetVisualDescriptor()
+        {
+            return visualDescriptor;
+        }
+        
+        public void RemoveVisuals()
+        {
+            visualDescriptor = null;
         }
         
         public bool CanBePlayed()
