@@ -45,7 +45,7 @@ namespace MindlessRaptorGames
         {
             if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings) || Input.GetKeyDown(KeybindingsDefinition.SkipCutscene))
             {
-                LoadScene();
+                AppControlService.Instance.LoadNewScene(mainMenuSceneName, false);
             }
         }
 
@@ -79,12 +79,7 @@ namespace MindlessRaptorGames
             }
             yield return new WaitForSeconds(endSequenceDelay);
 
-            LoadScene();
-        }
-
-        private void LoadScene()
-        {
-            SceneManager.LoadSceneAsync(mainMenuSceneName, LoadSceneMode.Single);
+            AppControlService.Instance.LoadNewScene(mainMenuSceneName, false);
         }
     }
 }

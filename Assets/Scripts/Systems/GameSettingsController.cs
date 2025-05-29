@@ -156,7 +156,7 @@ namespace MindlessRaptorGames
             DataService.Instance.SaveProgressData();
             
             HideSettings();
-            SceneManager.LoadSceneAsync(mainMenuSceneName, LoadSceneMode.Single);
+            AppControlService.Instance.LoadNewScene(mainMenuSceneName);
         }
         
         private void OnQuitButtonPressed()
@@ -164,7 +164,7 @@ namespace MindlessRaptorGames
             if (SceneManager.GetActiveScene().name == gameplaySceneName)
             {
                 HideSettings();
-                SceneManager.LoadSceneAsync(mainMenuSceneName, LoadSceneMode.Single);
+                AppControlService.Instance.LoadNewScene(mainMenuSceneName);
                 return;
             }
             if (SceneManager.GetActiveScene().name == mainMenuSceneName)

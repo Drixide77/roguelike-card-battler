@@ -80,7 +80,7 @@ namespace MindlessRaptorGames
         
         private void OnContinueButtonClicked()
         {
-            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
+            AppControlService.Instance.LoadNewScene(gameplaySceneName);
             StartGameplay();
         }
         
@@ -117,7 +117,7 @@ namespace MindlessRaptorGames
         private void StartGameplay()
         {
             GameSettingsController.Instance.HideSettings();
-            SceneManager.LoadSceneAsync(gameplaySceneName, LoadSceneMode.Single);
+            AppControlService.Instance.LoadNewScene(gameplaySceneName);
         }
         
         private void SetCanvasGroupEnabled(CanvasGroup canvasGroup, bool enabled)

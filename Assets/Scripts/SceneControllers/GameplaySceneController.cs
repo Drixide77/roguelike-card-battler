@@ -23,7 +23,7 @@ namespace MindlessRaptorGames
         
         public void OnRunEnded()
         {
-            SceneManager.LoadSceneAsync(mainMenuSceneName, LoadSceneMode.Single);
+            AppControlService.Instance.LoadNewScene(mainMenuSceneName);
         }
     }
 }
