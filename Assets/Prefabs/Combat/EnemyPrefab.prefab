@@ -477,6 +477,7 @@ MonoBehaviour:
   NameLabel: {fileID: 2921360077492226845}
   HealthLabel: {fileID: 3418130479245448223}
   NextActionDisplay: {fileID: 4885081462192984763}
+  EnemyId: 
 --- !u!61 &3075820909885398951
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -614,8 +615,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchoredPosition: {x: 0, y: 10}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2150972893703557152
 CanvasRenderer:
@@ -645,7 +646,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7edebaadc7516274e81af7db6b20a0e1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a629020749a4a59458a9e9994b39abd5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
