@@ -10,7 +10,7 @@ namespace MindlessRaptorGames
 
     public enum EffectTarget
     {
-        Self, SingleEnemy, AllEnemies, AllBoard
+        Player, SingleEnemy, AllEnemies, AllBoard
     }
     
     [Serializable]
@@ -20,9 +20,9 @@ namespace MindlessRaptorGames
         public EffectTarget Target;
         public ScriptableObject EffectSO;
         
-        public ICardEffect GetCardEffect()
+        public ICombatEffect GetCombatEffect()
         {
-            return EffectSO as ICardEffect;
+            return EffectSO as ICombatEffect;
         }
     }
 }

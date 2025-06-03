@@ -23,6 +23,7 @@ namespace MindlessRaptorGames
             this.visualDescriptor = visualDescriptor;
             
             this.visualDescriptor.gameObject.SetActive(true);
+            this.visualDescriptor.HighlightImage.gameObject.SetActive(false);
             this.visualDescriptor.NameLabel.text = Name;
             this.visualDescriptor.Image.sprite = Sprite;
             this.visualDescriptor.HealthFillImage.fillAmount = 1f;
@@ -51,6 +52,11 @@ namespace MindlessRaptorGames
             {
                 flowController.EncounterController.EnemyDefeated?.Invoke(this);
             }
+        }
+
+        public void SetHighlight(bool active)
+        {
+            visualDescriptor.HighlightImage.gameObject.SetActive(active);
         }
         
         public void PerformEnemyAction(GameFlowController flowController)

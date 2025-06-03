@@ -27,7 +27,7 @@ namespace MindlessRaptorGames
 
         private void OnCardSelected(bool selected)
         {
-            flowController.BoardController.SetSelectedCard(selected, cardData);
+            flowController.BoardController.SetSelectedCard(selected, cardData.Effects[0].Target, cardData);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MindlessRaptorGames
 {
@@ -7,6 +8,7 @@ namespace MindlessRaptorGames
     {
         [Header("Scene References")]
         [SerializeField] private Transform handPosition;
+        [SerializeField] private Image boardHighlightImage;
         [Header("Settings")]
         [SerializeField] private int initialHandSize = 5;
         [SerializeField] private int maxHandSize = 10;
@@ -35,11 +37,21 @@ namespace MindlessRaptorGames
                 {
                     foreach (RaycastHit2D hit in cubeHit)
                     {
+                        if (hit.collider.CompareTag("Board"))
+                        {
+                            selectedCard.PlayCard(flowController.EncounterController.GetEnemies());
+                            SetSelectedCard(false, EffectTarget.SingleEnemy);
+                            return;
+                        }
+                    }
+                    foreach (RaycastHit2D hit in cubeHit)
+                    {
                         if (hit.collider.CompareTag("Enemy"))
                         {
                             string enemyId = hit.collider.gameObject.GetComponent<EnemyVisualDescriptor>().EnemyId;
                             selectedCard.PlayCard(new List<Enemy>() { flowController.EncounterController.GetEnemyById(enemyId) });
-                            cardIsSelected = false;
+                            SetSelectedCard(false, EffectTarget.SingleEnemy);
+                            return;
                         }
                     }
                 }
@@ -111,7 +123,7 @@ namespace MindlessRaptorGames
                     else
                     {
                         // The odd case where you entire deck has been exhausted?
-                        flowController.TurnController.OnDrawingCompleted();
+                        flowController.battleController.OnDrawingCompleted();
                         UpdateBoardUI();
                         return;
                     }
@@ -130,7 +142,7 @@ namespace MindlessRaptorGames
                     drawPile.RemoveAt(0);
                 }
             }
-            flowController.TurnController.OnDrawingCompleted();
+            flowController.battleController.OnDrawingCompleted();
             UpdateBoardUI();
         }
 
@@ -173,8 +185,9 @@ namespace MindlessRaptorGames
             UpdateHandVisuals();
         }
 
-        public void SetSelectedCard(bool selected, Card card = null)
+        public void SetSelectedCard(bool selected, EffectTarget target, Card card = null)
         {
+            SetTargetHighlights(target, selected);
             if (!selected)
             {
                 cardIsSelected = false;
@@ -182,7 +195,16 @@ namespace MindlessRaptorGames
             }
             selectedCard = card;
             cardIsSelected = true;
-            
+        }
+
+        private void SetTargetHighlights(EffectTarget target, bool active)
+        {
+            //flowController.PlayerController
+            boardHighlightImage.gameObject.SetActive(target == EffectTarget.AllEnemies && active);
+            foreach (Enemy enemy in flowController.EncounterController.GetEnemies())
+            {
+                enemy.SetHighlight(target == EffectTarget.SingleEnemy && active);
+            }
         }
         
         private void UpdateHandVisuals()

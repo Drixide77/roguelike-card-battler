@@ -4,19 +4,38 @@ using UnityEngine;
 namespace MindlessRaptorGames
 {
     [CreateAssetMenu(fileName = "DealDamage", menuName = "Game Elements/Effects/Deal Damage", order = 1)]
-    public class DealDamageEffect : ScriptableObject, ICardEffect
+    public class DealDamageEffect : ScriptableObject, ICombatEffect
     {
         public EffectType GetEffectType()
         {
             return EffectType.DealDamage;
         }
-        
-        public void PerformEffect(List<Enemy> targets, int magnitude)
+
+        public void PerformEffect(List<Enemy> enemyTargets, PlayerController playerController, EffectTarget targetType, int magnitude)
         {
-            if (targets.Count == 0) Debug.LogError("DealDamageEffect -> PerformEffect: Attempted to perform effect without any targets.");
-            foreach (var target in targets)
+            Enemy[] tempList = new Enemy[enemyTargets.Count];
+            switch (targetType)
             {
-                target.ModifyHealth(-magnitude);
+                case EffectTarget.Player:
+                    playerController.ModifyHealth(-magnitude);
+                    break;
+                case EffectTarget.SingleEnemy: case EffectTarget.AllEnemies:
+                    enemyTargets.CopyTo(tempList);
+                    for(int i = 0; i < tempList.Length; ++i)
+                    {
+                        tempList[i]?.ModifyHealth(-magnitude);
+                    }
+                    break;
+                case EffectTarget.AllBoard:
+                    enemyTargets.CopyTo(tempList);
+                    for(int i = 0; i < tempList.Length; ++i)
+                    {
+                        tempList[i]?.ModifyHealth(-magnitude);
+                    }
+                    playerController.ModifyHealth(-magnitude);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -25,7 +44,7 @@ namespace MindlessRaptorGames
             string description = "";
             switch (targetType)
             {
-                case EffectTarget.Self:
+                case EffectTarget.Player:
                     description = "Deal " + magnitude + " damage to yourself.";
                     break;
                 case EffectTarget.SingleEnemy:

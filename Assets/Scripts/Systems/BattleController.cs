@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MindlessRaptorGames
 {
-    public class TurnController : GameplayModule
+    public class BattleController : GameplayModule
     {
         public enum TurnPhase
         {

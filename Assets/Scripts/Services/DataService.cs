@@ -10,8 +10,9 @@ namespace MindlessRaptorGames
         // Singleton pattern
         public static DataService Instance { get; private set; }
         
-        [Header("Card Data")]
+        [Header("Game Data")]
         [SerializeField] private CardCollectionSO cardCollection;
+        [SerializeField] private EncounterCollectionSO encounterCollection;
         
         private ProgressData progressData = null;
         private string saveFilePath;
@@ -109,6 +110,16 @@ namespace MindlessRaptorGames
                 cards.Add(cardSO.ToCard(flowController));
             }
             return cards;
+        }
+        
+        public List<EncounterData> GetEncounterCollection()
+        {
+            List<EncounterData> encounters = new List<EncounterData>();
+            foreach (var encounter in encounterCollection.Encounters)
+            {
+                encounters.Add(encounter.ToEncounter());
+            }
+            return encounters;
         }
         
         public bool HasGameInProgress()

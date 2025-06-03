@@ -11,12 +11,12 @@ namespace MindlessRaptorGames
 
         [Header("Prefabs and Data")]
         [SerializeField] private EnemyVisualDescriptor enemyVisualPrefab;
-        // TODO - Have proper encounters and multiples enemies!
-        [SerializeField] private EnemySO enemySO;
         [Header("Scene References")]
         [SerializeField] private CanvasGroup encounterCanvasGroup;
         [SerializeField] private Transform enemiesParent;
-
+        
+        private List<EncounterData> encounterCollection;
+        
         private List<EnemyVisualDescriptor> visualPrefabs;
         private List<Enemy> encounterEnemies;
 
@@ -29,14 +29,14 @@ namespace MindlessRaptorGames
         {
             base.Initialize(gameFlowController);
             EnemyDefeated += OnEnemyDefeated;
+            encounterCollection = DataService.Instance.GetEncounterCollection();
             visualPrefabs = new List<EnemyVisualDescriptor>();
             encounterEnemies = new List<Enemy>();
         }
 
         public void OnCombatStart()
         {
-            // TODO - TEMP! To be removed
-            SetEncounterEnemies(new List<EnemySO> { enemySO, enemySO });
+            SetEncounterEnemies(encounterCollection.GetRandomElement());
             
             Utils.SetCanvasGroupVisible(encounterCanvasGroup, true);
         }
@@ -69,17 +69,17 @@ namespace MindlessRaptorGames
             return null;
         }
 
-        private void SetEncounterEnemies(List<EnemySO> newEnemiesSO)
+        private void SetEncounterEnemies(EncounterData encounter)
         {
             encounterEnemies.Clear();
-            for (int i = 0; i < newEnemiesSO.Count; i++)
+            for (int i = 0; i < encounter.Enemies.Count; i++)
             {
                 if (i >= visualPrefabs.Count)
                 {
                     visualPrefabs.Add(Instantiate(enemyVisualPrefab.gameObject, enemiesParent).GetComponent<EnemyVisualDescriptor>());
                 }
 
-                Enemy enemy = newEnemiesSO[i].ToEnemy();
+                Enemy enemy = encounter.Enemies[i];
                 enemy.Initialize(flowController, visualPrefabs[i], "enemy"+i);
                 encounterEnemies.Add(enemy);
             }
@@ -99,7 +99,7 @@ namespace MindlessRaptorGames
         private IEnumerator FinishEnemyActionsWithDelayCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            flowController.TurnController.OnEnemyActionsFinished();
+            flowController.battleController.OnEnemyActionsFinished();
         }
     }
 }

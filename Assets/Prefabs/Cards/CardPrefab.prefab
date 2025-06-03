@@ -545,12 +545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987ec38b53c3474bbe4cf50054227276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardMovement: {fileID: 3690159255518710664}
   NameLabel: {fileID: 2652126706554011062}
   EnergyCostLabel: {fileID: 6493657469092619426}
   Image: {fileID: 226090114314613447}
   RarityIcon: {fileID: 8590611206696140320}
   EffectsLabel: {fileID: 588845800739998618}
-  cardMovement: {fileID: 3690159255518710664}
 --- !u!61 &4871981094974329480
 BoxCollider2D:
   m_ObjectHideFlags: 0

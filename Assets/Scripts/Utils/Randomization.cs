@@ -19,5 +19,10 @@ namespace MindlessRaptorGames
                 list[n] = value;  
             }  
         }
+
+        public static T GetRandomElement<T>(this IList<T> list)
+        {
+            return list[rng.Next(0, list.Count)];
+        }
     }
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3cb5f07e97142f5824536298abd3ed4, type: 3}
-  m_Name: Slime
+  m_Name: Slime King
   m_EditorClassIdentifier: 
-  Name: Slime
-  Sprite: {fileID: 21300000, guid: a629020749a4a59458a9e9994b39abd5, type: 3}
-  Health: 20
-  Damage: 6
+  Name: Slime King
+  Sprite: {fileID: 21300000, guid: dcf001f739b7e854095c750921fbc5f1, type: 3}
+  Health: 35
+  Damage: 9
