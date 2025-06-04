@@ -72,6 +72,10 @@ namespace MindlessRaptorGames
         private void SetEncounterEnemies(EncounterData encounter)
         {
             encounterEnemies.Clear();
+            foreach (var prefab in visualPrefabs)
+            {
+                prefab.gameObject.SetActive(false);
+            }
             for (int i = 0; i < encounter.Enemies.Count; i++)
             {
                 if (i >= visualPrefabs.Count)

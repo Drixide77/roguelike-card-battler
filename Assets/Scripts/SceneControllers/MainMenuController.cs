@@ -28,6 +28,7 @@ namespace MindlessRaptorGames
         private const AudioRepositoryEntryId ToggleSettingsSound = AudioRepositoryEntryId.UIButtonSound;
         
         private Coroutine animationCoroutine;
+        private bool mainMenuAnimationFinished = false;
         
         private void Awake()
         {
@@ -53,6 +54,10 @@ namespace MindlessRaptorGames
                 animationCoroutine = StartCoroutine(AnimateMenuCoroutine());
                 AppControlService.Instance.firstTimeOnMainMenu = false;
             }
+            else
+            {
+                mainMenuAnimationFinished = true;
+            }
 
             UpdateButtonState();
         }
@@ -61,7 +66,7 @@ namespace MindlessRaptorGames
         {
             if (!GameSettingsController.Instance.SettingsPanelShowing())
             {
-                if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings))
+                if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings) && mainMenuAnimationFinished)
                 {
                     AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
                     GameSettingsController.Instance.ShowSettings(false);
@@ -138,6 +143,7 @@ namespace MindlessRaptorGames
             SetCanvasGroupEnabled(mainPanelCanvasGroup, true);
             yield return new WaitForSeconds(holdTime);
             SetCanvasGroupEnabled(buttonContainerCanvasGroup, true);
+            mainMenuAnimationFinished = true;
         }
     }
 }

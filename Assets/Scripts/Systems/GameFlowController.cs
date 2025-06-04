@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace MindlessRaptorGames
 {
@@ -61,6 +62,8 @@ namespace MindlessRaptorGames
         {
             GameState = GameplayState.EncounterEnd;
             BattleController.FinishCombat();
+            // TODO - Remove
+            StartCoroutine(StartEncounterCoroutine());
         }
 
         public void OnPlayerDeath()
@@ -70,6 +73,13 @@ namespace MindlessRaptorGames
             BattleController.FinishCombat();
             DataService.Instance.SetGameInProgress(false);
             GameplaySceneController.OnRunEnded();
+        }
+        
+        // TODO - Remove this
+        private IEnumerator StartEncounterCoroutine()
+        {
+            yield return new WaitForSeconds(1f);
+            StartEncounter();
         }
     }
 }
