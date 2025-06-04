@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace MindlessRaptorGames
 {
@@ -11,13 +10,9 @@ namespace MindlessRaptorGames
         [Header("Assets")]
         [SerializeField] private string mainMenuSceneName;
 
-        private void Awake()
-        {
-            flowController.Initialize(this);
-        }
-
         private void Start()
         {
+            flowController.Initialize(this);
             flowController.StartRun();
         }
         

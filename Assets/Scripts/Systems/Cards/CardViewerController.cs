@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -73,6 +75,7 @@ namespace MindlessRaptorGames
         {
             viewerLabel.text = label;
             cachedCards = cards.ConvertAll(card => new Card(card));
+            cachedCards.Sort((x,y) => x.CardId.CompareTo(y.CardId));
             foreach (CardVisualDescriptor visual in visualPrefabs)
             {
                 visual.gameObject.SetActive(false);

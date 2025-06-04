@@ -41,6 +41,13 @@ namespace MindlessRaptorGames
             GameState = GameplayState.RunStart;
             GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
             GameplaySceneController.UIController.SetBoardUIVisibility(false);
+            EnterMapMode();
+        }
+
+        private void EnterMapMode()
+        {
+            GameState = GameplayState.MapInteraction;
+            // TODO - TEMP! REMOVE
             StartEncounter();
         }
 

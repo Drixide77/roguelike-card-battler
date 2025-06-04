@@ -29,6 +29,11 @@ namespace MindlessRaptorGames
         {
             cardMovement.enabled = active;
         }
+
+        public Card GetCardData()
+        {
+            return cardData;
+        }
         
         private void OnCardSelected(bool selected)
         {

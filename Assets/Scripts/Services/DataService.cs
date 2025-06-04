@@ -42,6 +42,11 @@ namespace MindlessRaptorGames
                 SaveProgressData();
                 Debug.Log("Fresh progress data created.");
             }
+            // Add serial id to all cards, in the collection's order
+            for (int i = 0; i < cardCollection.Cards.Count; i++)
+            {
+                cardCollection.Cards[i].SerialID = i;
+            }
         }
 
         private void InitializeProgressData()

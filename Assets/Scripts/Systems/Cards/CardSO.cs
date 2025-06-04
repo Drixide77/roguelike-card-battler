@@ -9,6 +9,7 @@ namespace MindlessRaptorGames
     public class CardSO : ScriptableObject
     {
         [Header("Attributes")]
+        public int SerialID;
         public string Name;
         public int EnergyCost;
         public Sprite Art;
@@ -17,7 +18,7 @@ namespace MindlessRaptorGames
 
         public Card ToCard(GameFlowController flowController)
         {
-            Card card = new Card(Name, EnergyCost, Art, Rarity, Effects, flowController);
+            Card card = new Card(SerialID, Name, EnergyCost, Art, Rarity, Effects, flowController);
             return card;
         }
     }
