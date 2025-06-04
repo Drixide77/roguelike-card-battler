@@ -16,7 +16,7 @@ namespace MindlessRaptorGames
         public EncounterController EncounterController;
         public DeckController DeckController;
         public BoardController BoardController;
-        public BattleController battleController;
+        public BattleController BattleController;
 
         public GameplayState GameState { get; private set; }
 
@@ -33,7 +33,7 @@ namespace MindlessRaptorGames
             EncounterController.Initialize(this);
             DeckController.Initialize(this);
             BoardController.Initialize(this);
-            battleController.Initialize(this);
+            BattleController.Initialize(this);
         }
 
         public void StartRun()
@@ -47,20 +47,20 @@ namespace MindlessRaptorGames
         public void StartEncounter()
         {
             GameState = GameplayState.Encounter;
-            battleController.BeginCombat();
+            BattleController.BeginCombat();
         }
         
         public void EndEncounter()
         {
             GameState = GameplayState.EncounterEnd;
-            battleController.FinishCombat();
+            BattleController.FinishCombat();
         }
 
         public void OnPlayerDeath()
         {
             GameState = GameplayState.RunEnd;
             Debug.Log("Game Over!");
-            battleController.FinishCombat();
+            BattleController.FinishCombat();
             DataService.Instance.SetGameInProgress(false);
             GameplaySceneController.OnRunEnded();
         }

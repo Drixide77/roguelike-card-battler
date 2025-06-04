@@ -47,7 +47,7 @@ namespace MindlessRaptorGames
         {
             if (Input.GetKeyDown(KeybindingsDefinition.ExitAndToggleSettings))
             {
-                if (!GameSettingsController.Instance.SettingsPanelShowing())
+                if (!GameSettingsController.Instance.SettingsPanelShowing() && !CardViewerController.Instance.IsShown())
                 {
                     AudioService.Instance.PlaySFXClip(ToggleSettingsSound);
                     GameSettingsController.Instance.ShowSettings(true);

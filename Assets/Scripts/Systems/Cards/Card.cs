@@ -17,8 +17,8 @@ namespace MindlessRaptorGames
         public Sprite Art;
         public CardRarity Rarity;
         public List<EffectData> Effects;
-
-        private GameFlowController flowController;
+        public GameFlowController FlowController;
+        
         private CardVisualDescriptor visualDescriptor;
 
         public Card(string name, int energyCost, Sprite art, CardRarity rarity, List<EffectData> effects, GameFlowController flowController)
@@ -28,7 +28,17 @@ namespace MindlessRaptorGames
             Art = art;
             Rarity = rarity;
             Effects = effects;
-            this.flowController = flowController;
+            FlowController = flowController;
+        }
+
+        public Card(Card card)
+        {
+            Name = card.Name;
+            EnergyCost = card.EnergyCost;
+            Art = card.Art;
+            Rarity = card.Rarity;
+            Effects = card.Effects;
+            FlowController = card.FlowController;
         }
 
         public void InitializeVisuals(CardVisualDescriptor descriptor)
@@ -53,9 +63,9 @@ namespace MindlessRaptorGames
             visualDescriptor.EffectsLabel.text = "";
             foreach (EffectData effectData in Effects)
             {
-                visualDescriptor.EffectsLabel.text += effectData.GetCombatEffect().GetDescription(effectData.Target, effectData.Magnitude);
+                visualDescriptor.EffectsLabel.text += effectData.GetCombatEffect().GetDescription(effectData.Target, effectData.Magnitude, true);
             }
-            visualDescriptor.SetReferences(this, flowController);
+            visualDescriptor.SetReferences(this, FlowController);
         }
 
         public CardVisualDescriptor GetVisualDescriptor()
@@ -75,7 +85,7 @@ namespace MindlessRaptorGames
 
         public bool HasSufficientEnergy()
         {
-            return flowController.battleController.CurrentEnergy >= EnergyCost;
+            return FlowController.BattleController.CurrentEnergy >= EnergyCost;
         }
 
         public void PlayCard(List<Enemy> targets)
@@ -86,14 +96,14 @@ namespace MindlessRaptorGames
                 return;
             }
 
-            flowController.battleController.SpendEnergy(EnergyCost);
+            FlowController.BattleController.SpendEnergy(EnergyCost);
             
             foreach (var effect in Effects)
             {
-                effect.GetCombatEffect().PerformEffect(targets, flowController.PlayerController, effect.Target, effect.Magnitude);
+                effect.GetCombatEffect().PerformEffect(targets, FlowController.PlayerController, effect.Target, effect.Magnitude);
             }
             
-            flowController.BoardController.DiscardCard(this, false);
+            FlowController.BoardController.DiscardCard(this, false);
         }
     }
 }

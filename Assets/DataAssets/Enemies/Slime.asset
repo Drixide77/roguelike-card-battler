@@ -15,4 +15,7 @@ MonoBehaviour:
   Name: Slime
   Sprite: {fileID: 21300000, guid: a629020749a4a59458a9e9994b39abd5, type: 3}
   Health: 20
-  Damage: 6
+  Actions:
+  - Magnitude: 6
+    Target: 0
+    EffectSO: {fileID: 11400000, guid: df11b254fea5e5b4c8ff36cab9cfce08, type: 2}

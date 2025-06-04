@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MindlessRaptorGames
 {
     [CreateAssetMenu(fileName = "New Enemy", menuName = "Game Elements/Enemy", order = 1)]
     public class EnemySO : ScriptableObject
     {
+        [Header("Attributes")]
         public string Name;
         public Sprite Sprite;
         public int Health;
-        public int Damage;
+        [Header("Actions")]
+        public List<EffectData> Actions;
 
         public Enemy ToEnemy()
         {
@@ -17,7 +20,7 @@ namespace MindlessRaptorGames
                 Name = Name,
                 Sprite = Sprite,
                 MaxHealth = Health,
-                Damage = Damage
+                Actions = Actions,
             };
         }
     }

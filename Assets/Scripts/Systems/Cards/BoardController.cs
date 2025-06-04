@@ -123,7 +123,7 @@ namespace MindlessRaptorGames
                     else
                     {
                         // The odd case where you entire deck has been exhausted?
-                        flowController.battleController.OnDrawingCompleted();
+                        flowController.BattleController.OnDrawingCompleted();
                         UpdateBoardUI();
                         return;
                     }
@@ -142,7 +142,7 @@ namespace MindlessRaptorGames
                     drawPile.RemoveAt(0);
                 }
             }
-            flowController.battleController.OnDrawingCompleted();
+            flowController.BattleController.OnDrawingCompleted();
             UpdateBoardUI();
         }
 
@@ -235,14 +235,12 @@ namespace MindlessRaptorGames
         
         private void OnDrawPileButtonPressed()
         {
-            // TODO - Implement
-            Debug.Log("The draw pile contains " + drawPile.Count + " cards.");
+            CardViewerController.Instance.ShowCardView("- Draw Pile (" + drawPile.Count + ") -", drawPile);
         }
         
         private void OnDiscardPileButtonPressed()
         {
-            // TODO - Implement
-            Debug.Log("The discard pile contains " + discardPile.Count + " cards.");
+            CardViewerController.Instance.ShowCardView("- Discard Pile (" + discardPile.Count + ") -", discardPile);
         }
         
         private void ReshuffleDrawPile()

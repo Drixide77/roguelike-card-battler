@@ -25,6 +25,11 @@ namespace MindlessRaptorGames
             cardMovement.OnCardSelectionChanged += OnCardSelected;
         }
 
+        public void SetMovementLogic(bool active)
+        {
+            cardMovement.enabled = active;
+        }
+        
         private void OnCardSelected(bool selected)
         {
             flowController.BoardController.SetSelectedCard(selected, cardData.Effects[0].Target, cardData);

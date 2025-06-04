@@ -31,8 +31,7 @@ namespace MindlessRaptorGames
         
         private void OnDeckButtonPressed()
         {
-            // TODO - Implement
-            Debug.Log("The card library contains " + cardLibrary.Count + " cards.");
+            CardViewerController.Instance.ShowCardView("- Deck (" + currentDeck.Count + ") -", currentDeck);
         }
     }
 }

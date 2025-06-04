@@ -99,7 +99,7 @@ namespace MindlessRaptorGames
         private IEnumerator FinishEnemyActionsWithDelayCoroutine(float delay)
         {
             yield return new WaitForSeconds(delay);
-            flowController.battleController.OnEnemyActionsFinished();
+            flowController.BattleController.OnEnemyActionsFinished();
         }
     }
 }

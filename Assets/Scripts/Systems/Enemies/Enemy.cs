@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MindlessRaptorGames
@@ -8,12 +9,13 @@ namespace MindlessRaptorGames
         public string Name;
         public Sprite Sprite;
         public int MaxHealth;
-        public int Damage;
+        public List<EffectData> Actions;
 
         private GameFlowController flowController;
         private EnemyVisualDescriptor visualDescriptor;
         private int currentHealth;
         private string enemyId;
+        private int currentActionIndex = 0;
 
         public void Initialize(GameFlowController flowController, EnemyVisualDescriptor visualDescriptor, string enemyId)
         {
@@ -21,6 +23,7 @@ namespace MindlessRaptorGames
             this.enemyId = enemyId;
             this.flowController = flowController;
             this.visualDescriptor = visualDescriptor;
+            currentActionIndex = 0;
             
             this.visualDescriptor.gameObject.SetActive(true);
             this.visualDescriptor.HighlightImage.gameObject.SetActive(false);
@@ -28,8 +31,11 @@ namespace MindlessRaptorGames
             this.visualDescriptor.Image.sprite = Sprite;
             this.visualDescriptor.HealthFillImage.fillAmount = 1f;
             this.visualDescriptor.HealthLabel.text = currentHealth + "/" + MaxHealth;
-            this.visualDescriptor.NextActionDisplay.text = "Attk " + Damage;
+            this.visualDescriptor.NextActionDisplay.text = "";
             this.visualDescriptor.EnemyId = enemyId;
+            
+            Actions.Shuffle();
+            SetNextActionDisplay();
         }
 
         public int GetCurrentHealth()
@@ -61,8 +67,15 @@ namespace MindlessRaptorGames
         
         public void PerformEnemyAction(GameFlowController flowController)
         {
-            // TODO - Have proper enemy action logic
-            flowController.PlayerController.ModifyHealth(-Damage);
+            EffectData effect = Actions[currentActionIndex];
+            effect.GetCombatEffect().PerformEffect(null, flowController.PlayerController, effect.Target, effect.Magnitude);
+            currentActionIndex = (currentActionIndex + 1) % Actions.Count;
+            SetNextActionDisplay();
+        }
+
+        private void SetNextActionDisplay()
+        {
+            visualDescriptor.NextActionDisplay.text = (Actions[currentActionIndex].EffectSO as ICombatEffect)?.GetDescription(EffectTarget.Player, Actions[currentActionIndex].Magnitude, false);
         }
     }
 }
