@@ -18,6 +18,11 @@ namespace MindlessRaptorGames
         private Card cardData;
         private GameFlowController flowController;
 
+        public void ResetInteractionVisuals()
+        {
+            if (cardMovement && cardMovement.enabled) cardMovement.ResetVisuals();
+        }
+        
         public void SetReferences(Card card, GameFlowController gameFlowController)
         {
             cardData = card;

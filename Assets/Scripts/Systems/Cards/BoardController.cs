@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +28,8 @@ namespace MindlessRaptorGames
         
         private Card selectedCard; // The currently selected card
         private bool cardIsSelected = false; // Whether a card is selected at the momoent
+        
+        private bool requestBoardRedraw = false;
 
         private void Update()
         {
@@ -57,7 +60,18 @@ namespace MindlessRaptorGames
                 }
             }
         }
-        
+
+        private void LateUpdate()
+        {
+            if (requestBoardRedraw)
+            {
+                flowController.GameplaySceneController.UIController.UpdateDrawPileLabel(drawPile.Count);
+                flowController.GameplaySceneController.UIController.UpdateDiscardPileLabel(discardPile.Count);
+                UpdateHandVisuals();
+                requestBoardRedraw = false;
+            }
+        }
+
         private void OnDestroy()
         {
             flowController.GameplaySceneController.UIController.DrawPileButtonPressed -= OnDrawPileButtonPressed;
@@ -84,7 +98,7 @@ namespace MindlessRaptorGames
                 drawPile.Add(card);
             }
             drawPile.Shuffle();
-            UpdateBoardUI();
+            RequestBoardRedraw();
         }
 
         public void OnCombatEnd()
@@ -124,16 +138,16 @@ namespace MindlessRaptorGames
                     {
                         // The odd case where you entire deck has been exhausted?
                         flowController.BattleController.OnDrawingCompleted();
-                        UpdateBoardUI();
+                        RequestBoardRedraw();
                         return;
                     }
                 }
                 if (playerHand.Count < maxHandSize)
                 {
-                    CardVisualDescriptor descriptor = Instantiate(cardPrefab, handPosition.position, Quaternion.identity, handPosition).GetComponent<CardVisualDescriptor>();
+                    CardVisualDescriptor descriptor = GetVisualDescriptor();
                     drawPile[0].InitializeVisuals(descriptor);
+                    descriptor.ResetInteractionVisuals();
                     playerHand.Add(drawPile[0]);
-                    visualPrefabs.Add(descriptor);
                     drawPile.RemoveAt(0);
                 }
                 else // Hand is full
@@ -143,8 +157,9 @@ namespace MindlessRaptorGames
                 }
             }
             flowController.BattleController.OnDrawingCompleted();
-            UpdateBoardUI();
+            RequestBoardRedraw();
         }
+        
 
         public void DiscardCard(Card card, bool exhaust)
         {
@@ -152,15 +167,15 @@ namespace MindlessRaptorGames
             {
                 if (exhaust) exhaustPile.Add(card);
                 else discardPile.Add(card);
-                visualPrefabs.Remove(card.GetVisualDescriptor());
-                Destroy(card.GetVisualDescriptor().gameObject);
+                card.GetVisualDescriptor().gameObject.SetActive(false);
                 card.RemoveVisuals();
             }
             else
             {
                 Debug.LogError("BoardController -> DiscardCard: Attempted to discard card not present in hand.");
             }
-            UpdateBoardUI();
+
+            RequestBoardRedraw();
         }
 
         public void DiscardHand()
@@ -170,19 +185,11 @@ namespace MindlessRaptorGames
                 // TODO - Handle exhaust case
                 DiscardCard(playerHand[0], false);
             }
-            UpdateBoardUI();
         }
 
         public void DrawNewHand()
         {
             DrawCards(initialHandSize);
-        }
-
-        public void UpdateBoardUI()
-        {
-            flowController.GameplaySceneController.UIController.UpdateDrawPileLabel(drawPile.Count);
-            flowController.GameplaySceneController.UIController.UpdateDiscardPileLabel(discardPile.Count);
-            UpdateHandVisuals();
         }
 
         public void SetSelectedCard(bool selected, EffectTarget target, Card card = null)
@@ -197,9 +204,31 @@ namespace MindlessRaptorGames
             cardIsSelected = true;
         }
 
+        private void RequestBoardRedraw()
+        {
+            requestBoardRedraw = true;
+        }
+
+        private CardVisualDescriptor GetVisualDescriptor()
+        {
+            foreach (CardVisualDescriptor prefab in visualPrefabs)
+            {
+                if (!prefab.gameObject.activeInHierarchy)
+                {
+                    prefab.gameObject.SetActive(true);
+                    return prefab;
+                }
+            }
+            
+            CardVisualDescriptor descriptor = Instantiate(cardPrefab, handPosition.position, Quaternion.identity, handPosition).GetComponent<CardVisualDescriptor>();
+            visualPrefabs.Add(descriptor);
+            return descriptor;
+        }
+
         private void SetTargetHighlights(EffectTarget target, bool active)
         {
-            //flowController.PlayerController
+            // TODO - Handle cards that target the player
+            //flowController.PlayerController ?
             boardHighlightImage.gameObject.SetActive(target == EffectTarget.AllEnemies && active);
             foreach (Enemy enemy in flowController.EncounterController.GetEnemies())
             {
@@ -209,19 +238,25 @@ namespace MindlessRaptorGames
         
         private void UpdateHandVisuals()
         {
-            int cardCount = visualPrefabs.Count;
+            List<CardVisualDescriptor> activePrefabs = new List<CardVisualDescriptor>();
+            foreach (CardVisualDescriptor prefab in visualPrefabs)
+            {
+                if (prefab.gameObject.activeInHierarchy) activePrefabs.Add(prefab);
+            }
+            
+            int cardCount = activePrefabs.Count;
 
             if (cardCount == 1)
             {
-                visualPrefabs[0].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-                visualPrefabs[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+                activePrefabs[0].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                activePrefabs[0].transform.localPosition = new Vector3(0f, 0f, 0f);
                 return;
             }
 
             for (int i = 0; i < cardCount; i++)
             {
                 float rotationAngle = (fanSpread * (i - (cardCount - 1) / 2f));
-                visualPrefabs[i].transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
+                activePrefabs[i].transform.localRotation = Quaternion.Euler(0f, 0f, rotationAngle);
 
                 float horizontalOffset = (cardSpacing * (i - (cardCount - 1) / 2f));
 
@@ -229,7 +264,7 @@ namespace MindlessRaptorGames
                 float verticalOffset = verticalSpacing * (1 - normalizedPosition * normalizedPosition);
 
                 //Set card position
-                visualPrefabs[i].transform.localPosition = new Vector3(horizontalOffset, verticalOffset, 0f);
+                activePrefabs[i].transform.localPosition = new Vector3(horizontalOffset, verticalOffset, 0f);
             }
         }
         

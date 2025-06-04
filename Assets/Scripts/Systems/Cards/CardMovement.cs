@@ -86,10 +86,16 @@ namespace MindlessRaptorGames
             }
         }
 
+        public void ResetVisuals()
+        {
+            TransitionToState0();
+        }
+        
         private void TransitionToState0()
         {
             currentState = 0;
             canvas.overrideSorting = false;
+            canvas.sortingLayerID = 0;
             rectTransform.localScale = originalScale; //Reset Scale
             rectTransform.localRotation = originalRotation; //Reset Rotation
             rectTransform.localPosition = originalPosition; //Reset Position

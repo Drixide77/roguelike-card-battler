@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
@@ -12,9 +11,10 @@ namespace MindlessRaptorGames
         public static AppControlService Instance { get; private set; }
         
         [HideInInspector] public bool firstTimeOnMainMenu;
-        [Header("Resolution")]
+        [Header("Display")]
         [SerializeField] private Vector2Int windowedResolution = new (1280, 720);
         [SerializeField] private float[] resolutionMultipliers = { 1f, 2f, 3f };
+        [SerializeField] private int targetFramerate = 60;
         [Header("Fader")]
         [SerializeField] private CanvasGroup fader;
         [SerializeField] private float fadeDuration = 0.5f;
@@ -48,6 +48,8 @@ namespace MindlessRaptorGames
             firstTimeOnMainMenu = true;
             // Required for 2D Raycasts
             Physics2D.queriesHitTriggers = true;
+            // Setting target framerate
+            Application.targetFrameRate = targetFramerate;
             // Initializing DOTween
             DOTween.Init();
         }
