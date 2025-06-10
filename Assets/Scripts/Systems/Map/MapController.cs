@@ -14,6 +14,11 @@ namespace MindlessRaptorGames
         private Vector2Int currentRoomPosition;
         private int currentFloor;
         private bool newRun = true;
+
+        private void OnDestroy()
+        {
+            flowController.GameplaySceneController.UIController.OnMapButtonPressed -= OnMapButtonPressed;
+        }
         
         public override void Initialize(GameFlowController gameFlowController)
         {
@@ -21,21 +26,19 @@ namespace MindlessRaptorGames
             currentFloor = 0;
             currentRoomPosition = Vector2Int.zero;
             rooms = new List<List<Room>>();
+            flowController.GameplaySceneController.UIController.OnMapButtonPressed += OnMapButtonPressed;
         }
 
         public void EnterMapMode()
         {
-            // TODO - Implement UI interaction
-
-            int newDepth = currentRoomPosition.x + 1;
-            if (newDepth == floorLength)
+            if (currentRoomPosition.x + 1 == floorLength)
             {
                 Debug.Log("# You win!");
                 flowController.OnPlayerDeath();
                 return;
             }
-            currentRoomPosition = new Vector2Int(newDepth, Random.Range(0, rooms[newDepth].Count));
-            PerformRoomLogic(currentRoomPosition);
+            
+            SetMapButtons();
         }
         
         public void OnRunStart()
@@ -43,8 +46,7 @@ namespace MindlessRaptorGames
             currentFloor = 0;
             currentRoomPosition = Vector2Int.zero;
             GenerateFloor(0);
-            //EnterMapMode();
-            PerformRoomLogic(currentRoomPosition);
+            EnterMapMode();
         }
 
         private void GenerateFloor(int floorLevel)
@@ -104,8 +106,77 @@ namespace MindlessRaptorGames
                     break;
                 }
                 default:
+                {
+                    Debug.LogError("MapController -> PerformRoomLogic: Unimplemented RoomType handling.");
+                    EnterMapMode();
+                    break;
+                }
+            }
+        }
+        
+        private void OnMapButtonPressed(int buttonIndex)
+        {
+            int newDepth = currentRoomPosition.x + 1;
+            int index;
+            switch (rooms[newDepth].Count)
+            {
+                case 1:
+                {
+                    index = 0;
+                    break;
+                }
+                case 2:
+                {
+                    index = buttonIndex == 2 ? 1 : 0;
+                    break;
+                }
+                case 3:
+                {
+                    index = buttonIndex;
+                    break;
+                }
+                default:
+                {
+                    index = 0;
+                    Debug.LogError("MapController -> OnMapButtonPressed: Unexpected number of rooms.");
+                    break;
+                }
+            }
+            currentRoomPosition = new Vector2Int(newDepth, index);
+            flowController.GameplaySceneController.UIController.SetMapUIVisibility(false);
+            PerformRoomLogic(currentRoomPosition);
+        }
+
+        private void SetMapButtons()
+        {
+            string leftButton = "", middleButton = "", rightButton = "";
+            
+            int newDepth = currentRoomPosition.x + 1;
+            switch (rooms[newDepth].Count)
+            {
+                case 1:
+                {
+                    middleButton = rooms[newDepth][0].RoomType.ToString();
+                    break;
+                }
+                case 2:
+                {
+                    leftButton = rooms[newDepth][0].RoomType.ToString();
+                    rightButton = rooms[newDepth][1].RoomType.ToString();
+                    break;
+                }
+                case 3:
+                {
+                    leftButton = rooms[newDepth][0].RoomType.ToString();
+                    middleButton = rooms[newDepth][1].RoomType.ToString();
+                    rightButton = rooms[newDepth][2].RoomType.ToString();
+                    break;
+                }
+                default:
                     break;
             }
+            
+            flowController.GameplaySceneController.UIController.SetMapUIVisibility(true, leftButton, middleButton, rightButton);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace MindlessRaptorGames
         public Action EndTurnButtonPressed;
         public Action DrawPileButtonPressed;
         public Action DiscardPileButtonPressed;
+        public Action<int> OnMapButtonPressed;
         
         [Header("Top Bar UI")]
         [SerializeField] private TMP_Text healthLabel;
@@ -26,6 +27,14 @@ namespace MindlessRaptorGames
         [SerializeField] private Button endTurnButton;
         [SerializeField] private Button drawPileButton;
         [SerializeField] private Button discardPileButton;
+        [Header("Map UI")]
+        [SerializeField] private CanvasGroup mapCanvasGroup;
+        [SerializeField] private Button leftMapButton;
+        [SerializeField] private Button middleMapButton;
+        [SerializeField] private Button rightMapButton;
+        [SerializeField] private TMP_Text leftMapLabel;
+        [SerializeField] private TMP_Text middleMapLabel;
+        [SerializeField] private TMP_Text rightMapLabel;
         
         private const AudioRepositoryEntryId ToggleSettingsSound = AudioRepositoryEntryId.UIButtonSound;
         
@@ -36,6 +45,9 @@ namespace MindlessRaptorGames
             endTurnButton.onClick.AddListener(OnEndTurnButtonPressed);
             drawPileButton.onClick.AddListener(OnDrawPileButtonPressed);
             discardPileButton.onClick.AddListener(OnDiscardPileButtonPressed);
+            leftMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(0));
+            middleMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(1));
+            rightMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(2));
         }
 
         private void Start()
@@ -62,6 +74,9 @@ namespace MindlessRaptorGames
             endTurnButton.onClick.RemoveAllListeners();
             drawPileButton.onClick.RemoveAllListeners();
             discardPileButton.onClick.RemoveAllListeners();
+            leftMapButton.onClick.RemoveAllListeners();
+            middleMapButton.onClick.RemoveAllListeners();
+            rightMapButton.onClick.RemoveAllListeners();
         }
 
         public void UpdateHealth(int current, int max)
@@ -102,6 +117,17 @@ namespace MindlessRaptorGames
         public void SetBoardUIVisibility(bool shown)
         {
             Utils.SetCanvasGroupVisible(boardUICanvasGroup, shown);
+        }
+
+        public void SetMapUIVisibility(bool shown, string leftLabel = "", string middleLabel = "", string rightLabel = "")
+        {
+            Utils.SetCanvasGroupVisible(mapCanvasGroup, shown);
+            leftMapButton.gameObject.SetActive(leftLabel != "");
+            leftMapLabel.text = leftLabel;
+            middleMapButton.gameObject.SetActive(middleLabel != "");
+            middleMapLabel.text = middleLabel;
+            rightMapButton.gameObject.SetActive(rightLabel != "");
+            rightMapLabel.text = rightLabel;
         }
         
         private void OnDeckButtonPressed()
