@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MindlessRaptorGames
 {
@@ -18,6 +17,7 @@ namespace MindlessRaptorGames
         public DeckController DeckController;
         public BoardController BoardController;
         public BattleController BattleController;
+        public MapController MapController;
 
         public GameplayState GameState { get; private set; }
 
@@ -35,6 +35,7 @@ namespace MindlessRaptorGames
             DeckController.Initialize(this);
             BoardController.Initialize(this);
             BattleController.Initialize(this);
+            MapController.Initialize(this);
         }
 
         public void StartRun()
@@ -42,14 +43,15 @@ namespace MindlessRaptorGames
             GameState = GameplayState.RunStart;
             GameplaySceneController.UIController.SetEndTurnButtonStatus(false);
             GameplaySceneController.UIController.SetBoardUIVisibility(false);
-            EnterMapMode();
+            
+            GameState = GameplayState.MapInteraction;
+            MapController.OnRunStart();
         }
 
         private void EnterMapMode()
         {
             GameState = GameplayState.MapInteraction;
-            // TODO - TEMP! REMOVE
-            StartEncounter();
+            MapController.EnterMapMode();
         }
 
         public void StartEncounter()
@@ -62,8 +64,7 @@ namespace MindlessRaptorGames
         {
             GameState = GameplayState.EncounterEnd;
             BattleController.FinishCombat();
-            // TODO - Remove
-            StartCoroutine(StartEncounterCoroutine());
+            EnterMapMode();
         }
 
         public void OnPlayerDeath()
@@ -73,13 +74,6 @@ namespace MindlessRaptorGames
             BattleController.FinishCombat();
             DataService.Instance.SetGameInProgress(false);
             GameplaySceneController.OnRunEnded();
-        }
-        
-        // TODO - Remove this
-        private IEnumerator StartEncounterCoroutine()
-        {
-            yield return new WaitForSeconds(1f);
-            StartEncounter();
         }
     }
 }
