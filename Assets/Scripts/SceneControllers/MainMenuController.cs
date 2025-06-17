@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace MindlessRaptorGames
@@ -85,15 +83,17 @@ namespace MindlessRaptorGames
         
         private void OnContinueButtonClicked()
         {
-            AppControlService.Instance.LoadNewScene(gameplaySceneName);
             StartGameplay();
         }
         
         private void OnPlayButtonClicked()
         {
-            DataService.Instance.SetGameInProgress(true);
-            DataService.Instance.SaveProgressData();
-            StartGameplay();
+            if (DataService.Instance.HasGameInProgress())
+            {
+                ConfirmationDialogueController.Instance.ShowConfirmationDialogue("Your previous progress will be lost.", StartNewGame);
+                return;
+            }
+            StartNewGame();
         }
         
         private void OnSettingsButtonClicked()
@@ -119,6 +119,13 @@ namespace MindlessRaptorGames
             }
         }
 
+        private void StartNewGame()
+        {
+            DataService.Instance.SetGameInProgress(true);
+            DataService.Instance.SaveProgressData();
+            StartGameplay();
+        }
+        
         private void StartGameplay()
         {
             GameSettingsController.Instance.HideSettings();

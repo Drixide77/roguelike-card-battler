@@ -152,19 +152,24 @@ namespace MindlessRaptorGames
         
         private void OnAbandonRunButtonPressed()
         {
-            DataService.Instance.SetGameInProgress(false);
-            DataService.Instance.SaveProgressData();
-            
-            HideSettings();
-            AppControlService.Instance.LoadNewScene(mainMenuSceneName);
+            ConfirmationDialogueController.Instance.ShowConfirmationDialogue("Your current progress will be lost.", () =>
+            {
+                DataService.Instance.SetGameInProgress(false);
+                DataService.Instance.SaveProgressData();
+                HideSettings();
+                AppControlService.Instance.LoadNewScene(mainMenuSceneName);
+            });
         }
         
         private void OnQuitButtonPressed()
         {
             if (SceneManager.GetActiveScene().name == gameplaySceneName)
             {
-                HideSettings();
-                AppControlService.Instance.LoadNewScene(mainMenuSceneName);
+                ConfirmationDialogueController.Instance.ShowConfirmationDialogue("Your current progress will be saved.", () =>
+                {
+                    HideSettings();
+                    AppControlService.Instance.LoadNewScene(mainMenuSceneName);
+                });
                 return;
             }
             if (SceneManager.GetActiveScene().name == mainMenuSceneName)
