@@ -16,7 +16,7 @@ namespace MindlessRaptorGames
             flowController.StartRun();
         }
         
-        public void OnRunEnded()
+        public void ReturnToMainMenu()
         {
             AppControlService.Instance.LoadNewScene(mainMenuSceneName);
         }

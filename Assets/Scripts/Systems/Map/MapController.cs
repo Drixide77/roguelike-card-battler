@@ -33,8 +33,7 @@ namespace MindlessRaptorGames
         {
             if (currentRoomPosition.x + 1 == floorLength)
             {
-                Debug.Log("# You win!");
-                flowController.OnPlayerDeath();
+                flowController.OnRunEnded();
                 return;
             }
             

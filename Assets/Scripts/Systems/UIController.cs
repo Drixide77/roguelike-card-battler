@@ -12,6 +12,7 @@ namespace MindlessRaptorGames
         public Action DrawPileButtonPressed;
         public Action DiscardPileButtonPressed;
         public Action<int> OnMapButtonPressed;
+        public Action EndRunExitButtonPressed;
         
         [Header("Top Bar UI")]
         [SerializeField] private TMP_Text healthLabel;
@@ -35,6 +36,10 @@ namespace MindlessRaptorGames
         [SerializeField] private TMP_Text leftMapLabel;
         [SerializeField] private TMP_Text middleMapLabel;
         [SerializeField] private TMP_Text rightMapLabel;
+        [Header("Run End UI")]
+        [SerializeField] private CanvasGroup endPanelCanvasGroup;
+        [SerializeField] private TMP_Text endPanelContentsLabel;
+        [SerializeField] private Button exitEndPanelButton;
         
         private const AudioRepositoryEntryId ToggleSettingsSound = AudioRepositoryEntryId.UIButtonSound;
         
@@ -48,6 +53,7 @@ namespace MindlessRaptorGames
             leftMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(0));
             middleMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(1));
             rightMapButton.onClick.AddListener(() => OnMapButtonPressed.Invoke(2));
+            exitEndPanelButton.onClick.AddListener(OnEndRunExitButtonPressed);
         }
 
         private void Start()
@@ -77,6 +83,7 @@ namespace MindlessRaptorGames
             leftMapButton.onClick.RemoveAllListeners();
             middleMapButton.onClick.RemoveAllListeners();
             rightMapButton.onClick.RemoveAllListeners();
+            exitEndPanelButton.onClick.RemoveAllListeners();
         }
 
         public void UpdateHealth(int current, int max)
@@ -129,6 +136,12 @@ namespace MindlessRaptorGames
             rightMapButton.gameObject.SetActive(rightLabel != "");
             rightMapLabel.text = rightLabel;
         }
+
+        public void SetEndRunUIVisibility(bool shown, string contents = "")
+        {
+            Utils.SetCanvasGroupVisible(endPanelCanvasGroup, shown);
+            endPanelContentsLabel.text = contents;
+        }
         
         private void OnDeckButtonPressed()
         {
@@ -153,6 +166,11 @@ namespace MindlessRaptorGames
         private void OnDiscardPileButtonPressed()
         {
             DiscardPileButtonPressed?.Invoke();
+        }
+
+        private void OnEndRunExitButtonPressed()
+        {
+            EndRunExitButtonPressed?.Invoke();
         }
     }
 }

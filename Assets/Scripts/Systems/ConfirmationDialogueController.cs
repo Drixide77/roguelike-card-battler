@@ -28,12 +28,12 @@ namespace MindlessRaptorGames
             {
                 Destroy(gameObject);
             }
+            yesButton.onClick.AddListener(OnYesButtonPressed);
+            noButton.onClick.AddListener(OnNoButtonPressed);
         }
 
         private void Start()
         {
-            yesButton.onClick.AddListener(OnYesButtonPressed);
-            noButton.onClick.AddListener(OnNoButtonPressed);
             Utils.SetCanvasGroupVisible(canvasGroup, false);
         }
 

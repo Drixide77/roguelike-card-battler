@@ -21,21 +21,17 @@ namespace MindlessRaptorGames
 
         public GameplayState GameState { get; private set; }
 
+        private void OnDestroy()
+        {
+            GameplaySceneController.UIController.EndRunExitButtonPressed -= OnRunEndExitButtonPressed;
+        }
+        
         public void Initialize(GameplaySceneController gameplaySceneController)
         {
             GameplaySceneController = gameplaySceneController;
             GameState = GameplayState.None;
             InitializeModules();
-        }
-        
-        private void InitializeModules()
-        {
-            PlayerController.Initialize(this);
-            EncounterController.Initialize(this);
-            DeckController.Initialize(this);
-            BoardController.Initialize(this);
-            BattleController.Initialize(this);
-            MapController.Initialize(this);
+            GameplaySceneController.UIController.EndRunExitButtonPressed += OnRunEndExitButtonPressed;
         }
 
         public void StartRun()
@@ -46,12 +42,6 @@ namespace MindlessRaptorGames
             
             GameState = GameplayState.MapInteraction;
             MapController.OnRunStart();
-        }
-
-        private void EnterMapMode()
-        {
-            GameState = GameplayState.MapInteraction;
-            MapController.EnterMapMode();
         }
 
         public void StartEncounter()
@@ -69,11 +59,39 @@ namespace MindlessRaptorGames
 
         public void OnPlayerDeath()
         {
-            GameState = GameplayState.RunEnd;
-            Debug.Log("Game Over!");
             BattleController.FinishCombat();
+            OnRunEnded(true);
+        }
+        
+        public void OnRunEnded(bool defeated = false)
+        {
+            GameState = GameplayState.RunEnd;
             DataService.Instance.SetGameInProgress(false);
-            GameplaySceneController.OnRunEnded();
+            GameplaySceneController.UIController.SetEndRunUIVisibility(true,
+                defeated
+                    ? "You couldn't make it to the end of the dungeon..."
+                    : "And so she left, her spirit hungering for more.");
+        }
+
+        private void OnRunEndExitButtonPressed()
+        {
+            GameplaySceneController.ReturnToMainMenu();
+        }
+        
+        private void InitializeModules()
+        {
+            PlayerController.Initialize(this);
+            EncounterController.Initialize(this);
+            DeckController.Initialize(this);
+            BoardController.Initialize(this);
+            BattleController.Initialize(this);
+            MapController.Initialize(this);
+        }
+        
+        private void EnterMapMode()
+        {
+            GameState = GameplayState.MapInteraction;
+            MapController.EnterMapMode();
         }
     }
 }
